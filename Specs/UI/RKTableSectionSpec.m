@@ -1,5 +1,5 @@
 //
-//  RKTableViewSectionSpec.m
+//  RKTableSectionSpec.m
 //  RestKit
 //
 //  Created by Blake Watters on 8/3/11.
@@ -12,11 +12,11 @@
 #import "RKTableViewCellMapping.h"
 #import "RKTableController.h"
 
-@interface RKTableViewSectionSpec : RKSpec <RKSpecUI>
+@interface RKTableSectionSpec : RKSpec <RKSpecUI>
 
 @end
 
-@implementation RKTableViewSectionSpec
+@implementation RKTableSectionSpec
 
 - (void)itShouldInitializeASection {
     RKTableSection* section = [RKTableSection section];

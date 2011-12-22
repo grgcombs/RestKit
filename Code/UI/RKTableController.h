@@ -118,7 +118,7 @@
 - (void)updateTableViewUsingBlock:(void (^)())block;
 
 /** Adds a new section to the model. 
- *	@param section Must be a valid non nil RKTableViewSection. */
+ *	@param section Must be a valid non nil RKTableSection. */
 // NOTE: connects cellMappings if section.cellMappings is nil...
 - (void)addSection:(RKTableSection *)section;
 
@@ -129,7 +129,7 @@
 - (void)addSectionUsingBlock:(void (^)(RKTableSection *section))block;
 
 /** Inserts a new section at the specified index. 
- *	@param section Must be a valid non nil RKTableViewSection.
+ *	@param section Must be a valid non nil RKTableSection.
  *	@param index Must be less than the total number of sections. */
 - (void)insertSection:(RKTableSection *)section atIndex:(NSUInteger)index;
 

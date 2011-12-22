@@ -235,7 +235,7 @@ extern NSString* const RKTableControllerDidBecomeOffline;
 - (RKTableSection *)sectionWithHeaderTitle:(NSString *)title;
 
 /** Returns the index of the specified section. 
- *	@param section Must be a valid non nil RKTableViewSection.
+ *	@param section Must be a valid non nil RKTableSection.
  *	@return If section is not found, method returns NSNotFound. */
 - (NSUInteger)indexForSection:(RKTableSection *)section;
 

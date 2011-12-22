@@ -1,5 +1,5 @@
 //
-//  RKTableViewSection.h
+//  RKTableSection.h
 //  RestKit
 //
 //  Created by Blake Watters on 8/2/11.
