@@ -88,8 +88,7 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 @interface RKRequest ()
 @property (nonatomic, assign, readwrite, getter = isLoaded) BOOL loaded;
 @property (nonatomic, assign, readwrite, getter = isLoading) BOOL loading;
-@property (nonatomic, assign, readwrite, getter = isCancelled) BOOL cancelled;
-@property (nonatomic, retain, readwrite) RKResponse *response;
+@property (nonatomic, retain, readwrite) RKResponse *rkResponse;
 @end
 
 @implementation RKRequest
@@ -124,15 +123,12 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 @synthesize additionalRootCertificates = _additionalRootCertificates;
 @synthesize disableCertificateValidation = _disableCertificateValidation;
 @synthesize followRedirect = _followRedirect;
-@synthesize runLoopMode = _runLoopMode;
 @synthesize loaded = _loaded;
 @synthesize loading = _loading;
-@synthesize response = _response;
-@synthesize cancelled = _cancelled;
+@synthesize rkResponse = _rkResponse;
 
 #if TARGET_OS_IPHONE
 @synthesize backgroundPolicy = _backgroundPolicy;
-@synthesize backgroundTaskIdentifier = _backgroundTaskIdentifier;
 #endif
 
 + (RKRequest*)requestWithURL:(NSURL*)URL {
@@ -140,31 +136,34 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 }
 
 - (id)initWithURL:(NSURL*)URL {
-    self = [self init];
+    
+    CGFloat defaultTimeout = 120.0;
+    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:URL];
+    [urlRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData];
+    [urlRequest setTimeoutInterval:defaultTimeout];
+
+    self = [self initWithURLRequest:urlRequest];
     if (self) {
-        _URL = [URL retain];
-        [self reset];
         _authenticationType = RKRequestAuthenticationTypeNone;
         _cachePolicy = RKRequestCachePolicyDefault;
         _cacheTimeoutInterval = 0;
-        _timeoutInterval = 120.0;
+        _timeoutInterval = defaultTimeout;
         _defaultHTTPEncoding = NSUTF8StringEncoding;
         _followRedirect = YES;
     }
     return self;
 }
 
-- (id)init {
-    self = [super init];
+- (id)initWithURLRequest:(NSMutableURLRequest *)urlRequest {
+    self = [super initWithRequest:urlRequest];
     if (self) {
-        self.runLoopMode = NSRunLoopCommonModes;
+        _URL = [urlRequest.URL retain];
+        _URLRequest = [urlRequest retain];
+        _method = RKRequestMethodTypeFromName([urlRequest HTTPMethod]);
+        _loaded = NO;
+        _loading = NO;
 #if TARGET_OS_IPHONE
         _backgroundPolicy = RKRequestBackgroundPolicyNone;
-        _backgroundTaskIdentifier = 0;
-        BOOL backgroundOK = &UIBackgroundTaskInvalid != NULL;
-        if (backgroundOK) {
-            _backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-        }
 #endif
     }
 
@@ -179,26 +178,10 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     [_URLRequest release];
     _URLRequest = [[NSMutableURLRequest alloc] initWithURL:_URL];
     [_URLRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData];
-    [_connection release];
-    _connection = nil;
     self.loading = NO;
     self.loaded = NO;
-    self.cancelled = NO;
-}
-
-- (void)cleanupBackgroundTask {
-    #if TARGET_OS_IPHONE
-    BOOL backgroundOK = &UIBackgroundTaskInvalid != NULL;
-    if (backgroundOK && UIBackgroundTaskInvalid == self.backgroundTaskIdentifier) {
-        return;
-    }
-
-    UIApplication* app = [UIApplication sharedApplication];
-    if ([app respondsToSelector:@selector(beginBackgroundTaskWithExpirationHandler:)]) {
-            [app endBackgroundTask:_backgroundTaskIdentifier];
-            _backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-    }
-    #endif
+    //NSNumber *newState = [NSNumber numberWithInteger:1];
+    //[self performSelector:@selector(setState:) withObject:newState];
 }
 
 - (void)dealloc {
@@ -212,11 +195,8 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     _configurationDelegate = nil;
     [_reachabilityObserver release];
     _reachabilityObserver = nil;
-    [_connection cancel];
-    [_connection release];
-    _connection = nil;
-    [_response release];
-    _response = nil;
+    [_rkResponse release];
+    _rkResponse = nil;
     [_userData release];
     _userData = nil;
     [_URL release];
@@ -252,12 +232,7 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     [self invalidateTimeoutTimer];
     [_timeoutTimer release];
     _timeoutTimer = nil;
-    [_runLoopMode release];
-    _runLoopMode = nil;
-
-    // Cleanup a background task if there is any
-    [self cleanupBackgroundTask];
-
+        
     [super dealloc];
 }
 
@@ -406,13 +381,9 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 }
 
 - (void)cancelAndInformDelegate:(BOOL)informDelegate {
-    self.cancelled = YES;
-    [_connection cancel];
-    [_connection release];
-    _connection = nil;
     [self invalidateTimeoutTimer];
     self.loading = NO;
-
+    [super cancel];
     if (informDelegate && [_delegate respondsToSelector:@selector(requestDidCancelLoad:)]) {
         [_delegate requestDidCancelLoad:self];
     }
@@ -444,13 +415,28 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     if ([self.delegate respondsToSelector:@selector(requestDidStartLoad:)]) {
         [self.delegate requestDidStartLoad:self];
     }
-
-    RKResponse* response = [[[RKResponse alloc] initWithRequest:self] autorelease];
-
-    _connection = [[[[NSURLConnection alloc] initWithRequest:_URLRequest delegate:response startImmediately:NO] autorelease] retain];
-    [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:self.runLoopMode];
-    [_connection start];
-
+    
+    [self setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        RKRequest *strongSelf = (RKRequest *)operation;
+        if (!strongSelf)
+            return;
+        NSData *data = responseObject;
+        RKResponse *rkResponse = [[RKResponse alloc] initWithSynchronousRequest:strongSelf URLResponse:operation.response body:data error:nil];
+        [strongSelf didFinishLoad:rkResponse];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        RKRequest *strongSelf = (RKRequest *)operation;
+        if (!strongSelf)
+            return;
+        [strongSelf didFailLoadWithError:error];
+    }];
+        
+    // sometimes the request is already (falsly) finished? In this case, we want to run it manually, without the queue?
+    if (self.queue && self.queue.operationQueue && !self.isFinished) { 
+        [self.queue.operationQueue addOperation:self];
+    }
+    else {
+        [self start];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:RKRequestSentNotification object:self userInfo:nil];
 }
 
@@ -483,11 +469,10 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 
 - (void)sendAsynchronously {
     NSAssert(NO == self.loading || NO == self.loaded, @"Cannot send a request that is loading or loaded without resetting it first.");
-    _sentSynchronously = NO;
     if ([self shouldLoadFromCache]) {
-        RKResponse* response = [self loadResponseFromCache];
+        RKResponse* rkResponse = [self loadResponseFromCache];
         self.loading = YES;
-        [self performSelector:@selector(didFinishLoad:) withObject:response afterDelay:0];
+        [self performSelector:@selector(didFinishLoad:) withObject:rkResponse afterDelay:0];
     } else if ([self shouldDispatchRequest]) {
         [self createTimeoutTimer];
 #if TARGET_OS_IPHONE
@@ -510,11 +495,10 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
             // Fork a background task for continueing a long-running request
             __block RKRequest* weakSelf = self;
             __block id<RKRequestDelegate> weakDelegate = _delegate;
-            _backgroundTaskIdentifier = [app beginBackgroundTaskWithExpirationHandler:^{
+            [self setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
                 RKLogInfo(@"Background request time expired, canceling request.");
 
                 [weakSelf cancelAndInformDelegate:NO];
-                [weakSelf cleanupBackgroundTask];
 
                 if ([weakDelegate respondsToSelector:@selector(requestDidTimeout:)]) {
                     [weakDelegate requestDidTimeout:weakSelf];
@@ -546,68 +530,6 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
             [self performSelector:@selector(didFailLoadWithError:) withObject:error afterDelay:0];
         }
     }
-}
-
-- (RKResponse*)sendSynchronously {
-    NSAssert(NO == self.loading || NO == self.loaded, @"Cannot send a request that is loading or loaded without resetting it first.");
-    NSHTTPURLResponse* URLResponse = nil;
-    NSError* error;
-    NSData* payload = nil;
-    RKResponse* response = nil;
-    _sentSynchronously = YES;
-
-    if ([self shouldLoadFromCache]) {
-        response = [self loadResponseFromCache];
-        self.loading = YES;
-        [self didFinishLoad:response];
-    } else if ([self shouldDispatchRequest]) {
-        RKLogDebug(@"Sending synchronous %@ request to URL %@.", [self HTTPMethod], [[self URL] absoluteString]);
-
-        if (![self prepareURLRequest]) {
-            RKLogWarning(@"Failed to send request synchronously: prepareURLRequest returned NO.");
-            return nil;
-        }
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:RKRequestSentNotification object:self userInfo:nil];
-
-        self.loading = YES;
-        if ([self.delegate respondsToSelector:@selector(requestDidStartLoad:)]) {
-            [self.delegate requestDidStartLoad:self];
-        }
-
-        _URLRequest.timeoutInterval = _timeoutInterval;
-        payload = [NSURLConnection sendSynchronousRequest:_URLRequest returningResponse:&URLResponse error:&error];
-
-        if (payload != nil) error = nil;
-
-        response = [[[RKResponse alloc] initWithSynchronousRequest:self URLResponse:URLResponse body:payload error:error] autorelease];
-
-        if (error.code == NSURLErrorTimedOut) {
-            [self timeout];
-        } else if (payload == nil) {
-            [self didFailLoadWithError:error];
-        } else {
-            [self didFinishLoad:response];
-        }
-
-    } else {
-        if (_cachePolicy & RKRequestCachePolicyLoadIfOffline &&
-            [self.cache hasResponseForRequest:self]) {
-
-            response = [self loadResponseFromCache];
-
-        } else {
-            NSString* errorMessage = [NSString stringWithFormat:@"The client is unable to contact the resource at %@", [[self URL] absoluteString]];
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      errorMessage, NSLocalizedDescriptionKey,
-                                      nil];
-            error = [NSError errorWithDomain:RKErrorDomain code:RKRequestBaseURLOfflineError userInfo:userInfo];
-            [self didFailLoadWithError:error];
-            response = [[[RKResponse alloc] initWithSynchronousRequest:self URLResponse:URLResponse body:payload error:error] autorelease];
-        }
-    }
-
-    return response;
 }
 
 - (void)cancel {
@@ -669,37 +591,37 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     [self.cache setCacheDate:date forRequest:self];
 }
 
-- (void)didFinishLoad:(RKResponse *)response {
+- (void)didFinishLoad:(RKResponse *)rkResponse {
     self.loading = NO;
     self.loaded = YES;
 
-    RKLogInfo(@"Status Code: %ld", (long) [response statusCode]);
-    RKLogDebug(@"Body: %@", [response bodyAsString]);
+    RKLogInfo(@"Status Code: %ld", (long) [rkResponse statusCode]);
+    RKLogDebug(@"Body: %@", [rkResponse bodyAsString]);
 
-    self.response = response;
+    self.rkResponse = rkResponse;
 
-    if ((_cachePolicy & RKRequestCachePolicyEtag) && [response isNotModified]) {
-        self.response = [self loadResponseFromCache];
+    if ((_cachePolicy & RKRequestCachePolicyEtag) && [rkResponse isNotModified]) {
+        self.rkResponse = [self loadResponseFromCache];
         [self updateInternalCacheDate];
     }
 
-    if (![response wasLoadedFromCache] && [response isSuccessful] && (_cachePolicy != RKRequestCachePolicyNone)) {
-        [self.cache storeResponse:response forRequest:self];
+    if (![rkResponse wasLoadedFromCache] && [rkResponse isSuccessful] && (_cachePolicy != RKRequestCachePolicyNone)) {
+        [self.cache storeResponse:rkResponse forRequest:self];
     }
 
     if ([_delegate respondsToSelector:@selector(request:didLoadResponse:)]) {
-        [_delegate request:self didLoadResponse:self.response];
+        [_delegate request:self didLoadResponse:self.rkResponse];
     }
 
     if (self.onDidLoadResponse) {
-        self.onDidLoadResponse(self.response);
+        self.onDidLoadResponse(self.rkResponse);
     }
 
-    if ([response isServiceUnavailable]) {
+    if ([rkResponse isServiceUnavailable]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:RKServiceDidBecomeUnavailableNotification object:self];
     }
 
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.response
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.rkResponse
                                                          forKey:RKRequestDidLoadResponseNotificationUserInfoResponseKey];
     [[NSNotificationCenter defaultCenter] postNotificationName:RKRequestDidLoadResponseNotification
                                                         object:self
@@ -739,6 +661,9 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     if ([self.URL isKindOfClass:[RKURL class]]) {
         RKURL* url = (RKURL*)self.URL;
         resourcePath = url.resourcePath;
+    }
+    else if (self.URL) {
+        resourcePath = [self.URL path];
     }
     return resourcePath;
 }
@@ -815,19 +740,6 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
         self.params = [RKRequestSerialization serializationWithData:[parsedValue dataUsingEncoding:NSUTF8StringEncoding]
                                                            MIMEType:MIMEType];
     }
-}
-
-// Deprecations
-+ (RKRequest*)requestWithURL:(NSURL*)URL delegate:(id)delegate {
-    return [[[RKRequest alloc] initWithURL:URL delegate:delegate] autorelease];
-}
-
-- (id)initWithURL:(NSURL*)URL delegate:(id)delegate {
-    self = [self initWithURL:URL];
-    if (self) {
-        _delegate = delegate;
-    }
-    return self;
 }
 
 @end

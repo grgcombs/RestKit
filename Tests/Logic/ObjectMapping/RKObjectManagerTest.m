@@ -287,7 +287,7 @@
         loader.resourcePath = @"/humans/1";
     }];
     [responseLoader waitForResponse];
-    assertThat(responseLoader.response.request.resourcePath, is(equalTo(@"/humans/1")));
+    assertThat(responseLoader.rkResponse.request.resourcePath, is(equalTo(@"/humans/1")));
 }
 
 - (void)testShouldAllowYouToUseObjectHelpersWithoutRouting {
@@ -306,7 +306,7 @@
         loader.resourcePath = @"/humans/1";
     }];
     [responseLoader waitForResponse];
-    assertThat(responseLoader.response.request.resourcePath, is(equalTo(@"/humans/1")));
+    assertThat(responseLoader.rkResponse.request.resourcePath, is(equalTo(@"/humans/1")));
 }
 
 - (void)testShouldAllowYouToSkipTheMappingProvider {
@@ -326,7 +326,7 @@
     }];
     [responseLoader waitForResponse];
     assertThatBool(responseLoader.wasSuccessful, is(equalToBool(YES)));
-    assertThat(responseLoader.response.request.resourcePath, is(equalTo(@"/humans/1")));
+    assertThat(responseLoader.rkResponse.request.resourcePath, is(equalTo(@"/humans/1")));
 }
 
 - (void)testShouldLetYouOverloadTheParamsOnAnObjectLoaderRequest {

@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'xcoder'
 require 'restkit/rake'
-require 'ruby-debug'
+require 'debugger'
 
 RestKit::Rake::ServerTask.new do |t|
   t.port = 4567

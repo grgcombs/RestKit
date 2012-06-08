@@ -28,7 +28,6 @@
  RKRequest objects.
  */
 @interface RKRequestQueue : NSObject {
-    NSString *_name;
     NSMutableArray *_requests;
     NSMutableSet *_loadingRequests;
     NSObject<RKRequestQueueDelegate> *_delegate;
@@ -38,6 +37,8 @@
     BOOL _suspended;
     BOOL _showsNetworkActivityIndicatorWhenBusy;
 }
+
+@property (nonatomic, retain) NSOperationQueue *operationQueue;
 
 
 ///-----------------------------------------------------------------------------
@@ -86,7 +87,7 @@
  Used to return existing queue references via
  [RKRequestQueue requestQueueWithName:]
  */
-@property (nonatomic, retain, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *name;
 
 /**
  Determine if a queue exists with a given name.
@@ -217,32 +218,6 @@
 #endif
 
 
-///-----------------------------------------------------------------------------
-/// @name Global Queues (Deprecated)
-///-----------------------------------------------------------------------------
-
-/**
- Returns the global queue
-
- @bug **DEPRECATED** in v0.10.0: All RKClient instances now own their own
- individual request queues.
-
- @see [RKClient requestQueue]
- @return Global request queue.
- */
-+ (RKRequestQueue *)sharedQueue DEPRECATED_ATTRIBUTE;
-
-/**
- Sets the global queue
-
- @bug **DEPRECATED** in v0.10.0: All RKClient instances now own their own
- individual request queues.
-
- @see [RKClient requestQueue]
- @param requestQueue The request queue to assign as the global queue.
- */
-+ (void)setSharedQueue:(RKRequestQueue *)requestQueue DEPRECATED_ATTRIBUTE;
-
 @end
 
 
@@ -311,7 +286,7 @@
  @param queue The queue that received the response.
  @param response The response that was received.
  */
-- (void)requestQueue:(RKRequestQueue *)queue didLoadResponse:(RKResponse *)response;
+- (void)requestQueue:(RKRequestQueue *)queue didLoadResponse:(RKResponse *)rkResponse;
 
 /**
  Sent when queue has cancelled a request.

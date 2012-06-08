@@ -145,11 +145,6 @@
  */
 - (NSString *)bodyAsString;
 
-/**
- Returns the response body parsed as JSON into an object
- @bug **DEPRECATED** in v0.10.0
- */
-- (id)bodyAsJSON DEPRECATED_ATTRIBUTE;
 
 /**
  Returns the response body parsed as JSON into an object

@@ -41,11 +41,11 @@ static const NSTimeInterval kFlushDelay = 0.3;
 #define RKLogComponent lcl_cRestKitNetworkQueue
 
 @interface RKRequestQueue ()
-@property (nonatomic, retain, readwrite) NSString* name;
+@property (nonatomic, copy) NSString* name;
 @end
 
 @implementation RKRequestQueue
-
+@synthesize operationQueue = _operationQueue;
 @synthesize name = _name;
 @synthesize delegate = _delegate;
 @synthesize concurrentRequestsLimit = _concurrentRequestsLimit;
@@ -56,16 +56,23 @@ static const NSTimeInterval kFlushDelay = 0.3;
 @synthesize showsNetworkActivityIndicatorWhenBusy = _showsNetworkActivityIndicatorWhenBusy;
 #endif
 
-+ (RKRequestQueue*)sharedQueue {
-    RKLogWarning(@"Deprecated invocation of [RKRequestQueue sharedQueue]. Returning [RKClient sharedClient].requestQueue. Update your code to reference the queue you want explicitly.");
-    return [RKClient sharedClient].requestQueue;
+- (void)setConcurrentRequestsLimit:(NSUInteger)concurrentRequestsLimit {
+    _concurrentRequestsLimit = concurrentRequestsLimit;
+    if (self.operationQueue) {
+        [self.operationQueue setMaxConcurrentOperationCount:concurrentRequestsLimit];
+    }
 }
 
-+ (void)setSharedQueue:(RKRequestQueue*)requestQueue {
-    RKLogWarning(@"Deprecated access to [RKRequestQueue setSharedQueue:]. Invoking [[RKClient sharedClient] setRequestQueue:]. Update your code to reference the specific queue instance you want.");
-    [RKClient sharedClient].requestQueue = requestQueue;
+- (void)setName:(NSString *)name {
+    if (_name) {
+        [_name release];
+        _name = nil;
+    }
+    _name = [name copy];
+    if (name && self.operationQueue) {
+        [self.operationQueue setName:[NSString stringWithFormat:@"org.RestKit.RequestQueue.%@", name]];
+    }
 }
-
 + (id)requestQueue {
     return [[self new] autorelease];
 }
@@ -137,6 +144,8 @@ static const NSTimeInterval kFlushDelay = 0.3;
         _concurrentRequestsLimit = 5;
         _requestTimeout = 300;
         _showsNetworkActivityIndicatorWhenBusy = NO;
+        _operationQueue = [[NSOperationQueue alloc] init];
+        [_operationQueue setMaxConcurrentOperationCount:_concurrentRequestsLimit];
 
 #if TARGET_OS_IPHONE
         BOOL backgroundOK = &UIApplicationDidEnterBackgroundNotification != NULL;
@@ -178,7 +187,10 @@ static const NSTimeInterval kFlushDelay = 0.3;
     _loadingRequests = nil;
     [_requests release];
     _requests = nil;
-
+    if (_operationQueue)
+        [_operationQueue cancelAllOperations];
+    [_operationQueue release];
+    _operationQueue = nil;
     [super dealloc];
 }
 
@@ -327,7 +339,10 @@ static const NSTimeInterval kFlushDelay = 0.3;
     }
 
     _suspended = isSuspended;
-
+    if (self.operationQueue) {
+        [self.operationQueue setSuspended:isSuspended];
+    }
+    
     if (!_suspended) {
         [self loadNextInQueue];
     } else if (_queueTimer) {
@@ -383,8 +398,12 @@ static const NSTimeInterval kFlushDelay = 0.3;
 
 - (BOOL)containsRequest:(RKRequest*)request {
     @synchronized(self) {
-        return [_requests containsObject:request];
+        if ([_requests containsObject:request])
+            return YES;
+        if (self.operationQueue && [self.operationQueue.operations containsObject:request])
+            return YES;
     }
+    return NO;
 }
 
 - (void)cancelRequest:(RKRequest*)request loadNext:(BOOL)loadNext {
@@ -455,6 +474,11 @@ static const NSTimeInterval kFlushDelay = 0.3;
         [self cancelRequest:request loadNext:NO];
     }
     [pool drain];
+    @synchronized(self) {
+        if (self.operationQueue) {
+            [self.operationQueue cancelAllOperations];
+        }
+    }
 }
 
 - (void)start {
@@ -472,9 +496,9 @@ static const NSTimeInterval kFlushDelay = 0.3;
     // We successfully loaded a response
     RKLogDebug(@"Received response for request %@, removing from queue. (Now loading %ld of %ld)", request, (long) self.loadingCount, (long) _concurrentRequestsLimit);
 
-    RKResponse* response = [userInfo objectForKey:RKRequestDidLoadResponseNotificationUserInfoResponseKey];
+    RKResponse* rkResponse = [userInfo objectForKey:RKRequestDidLoadResponseNotificationUserInfoResponseKey];
     if ([_delegate respondsToSelector:@selector(requestQueue:didLoadResponse:)]) {
-        [_delegate requestQueue:self didLoadResponse:response];
+        [_delegate requestQueue:self didLoadResponse:rkResponse];
     }
 
     [self removeLoadingRequest:request];

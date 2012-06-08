@@ -34,8 +34,8 @@
 }
 
 - (void)testShouldConsiderResponsesLessThanOneHudredOrGreaterThanSixHundredInvalid {
-    RKResponse* response = [[[RKResponse alloc] init] autorelease];
-    id mock = [OCMockObject partialMockForObject:response];
+    RKResponse* rkResponse = [[[RKResponse alloc] init] autorelease];
+    id mock = [OCMockObject partialMockForObject:rkResponse];
     NSInteger statusCode = 99;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(statusCode)] statusCode];
     assertThatBool([mock isInvalid], is(equalToBool(YES)));
@@ -45,8 +45,8 @@
 }
 
 - (void)testShouldConsiderResponsesInTheOneHudredsInformational {
-    RKResponse* response = [[[RKResponse alloc] init] autorelease];
-    id mock = [OCMockObject partialMockForObject:response];
+    RKResponse* rkResponse = [[[RKResponse alloc] init] autorelease];
+    id mock = [OCMockObject partialMockForObject:rkResponse];
     NSInteger statusCode = 100;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(statusCode)] statusCode];
     assertThatBool([mock isInformational], is(equalToBool(YES)));
@@ -56,8 +56,8 @@
 }
 
 - (void)testShouldConsiderResponsesInTheTwoHundredsSuccessful {
-    RKResponse* response = [[[RKResponse alloc] init] autorelease];
-    id mock = [OCMockObject partialMockForObject:response];
+    RKResponse* rkResponse = [[[RKResponse alloc] init] autorelease];
+    id mock = [OCMockObject partialMockForObject:rkResponse];
     NSInteger twoHundred = 200;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(twoHundred)] statusCode];
     assertThatBool([mock isSuccessful], is(equalToBool(YES)));
@@ -232,8 +232,8 @@
 }
 
 - (void)testShouldNotCrashOnFailureToParseBody {
-    RKResponse *response = [[RKResponse new] autorelease];
-    id mockResponse = [OCMockObject partialMockForObject:response];
+    RKResponse *rkResponse = [[RKResponse new] autorelease];
+    id mockResponse = [OCMockObject partialMockForObject:rkResponse];
     [[[mockResponse stub] andReturn:@"test/fake"] MIMEType];
     [[[mockResponse stub] andReturn:@"whatever"] bodyAsString];
     NSError *error = nil;
@@ -264,8 +264,8 @@
     RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
     [client get:@"/encoding" delegate:loader];
     [loader waitForResponse];
-    assertThat([loader.response bodyEncodingName], is(equalTo(@"us-ascii")));
-    assertThatInteger([loader.response bodyEncoding], is(equalToInteger(NSASCIIStringEncoding)));
+    assertThat([loader.rkResponse bodyEncodingName], is(equalTo(@"us-ascii")));
+    assertThatInteger([loader.rkResponse bodyEncoding], is(equalToInteger(NSASCIIStringEncoding)));
 }
 
 - (void)testFollowRedirect {
@@ -273,9 +273,9 @@
     RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
     [client get:@"/redirection" delegate:loader];
     [loader waitForResponse];
-    assertThatInteger(loader.response.statusCode, is(equalToInteger(200)));
+    assertThatInteger(loader.rkResponse.statusCode, is(equalToInteger(200)));
 
-    id body = [loader.response parsedBody:NULL];
+    id body = [loader.rkResponse parsedBody:NULL];
     assertThat([body objectForKey:@"redirected"], is(equalTo([NSNumber numberWithBool:YES])));
 }
 
@@ -291,8 +291,8 @@
     [request send];
     [loader waitForResponse];
 
-    assertThatInteger(loader.response.statusCode, is(equalToInteger(302)));
-    assertThat([loader.response.allHeaderFields objectForKey:@"Location"], is(equalTo(@"/redirection/target")));
+    assertThatInteger(loader.rkResponse.statusCode, is(equalToInteger(302)));
+    assertThat([loader.rkResponse.allHeaderFields objectForKey:@"Location"], is(equalTo(@"/redirection/target")));
 }
 
 - (void)testThatLoadingInvalidURLDoesNotCrashApp {

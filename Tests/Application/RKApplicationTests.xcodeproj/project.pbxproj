@@ -293,7 +293,7 @@
 		25FABE9C14E3698100E609E7 /* user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = user.json; sourceTree = "<group>"; };
 		25FABE9D14E3698100E609E7 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
 		25FABE9F14E3698100E609E7 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		25FABEA014E3698100E609E7 /* file */ = {isa = PBXFileReference; lastKnownFileType = file; path = file; sourceTree = "<group>"; };
+		25FABEA014E3698100E609E7 /* file */ = {isa = PBXFileReference; lastKnownFileType = text; path = file; sourceTree = "<group>"; };
 		25FABEA214E3698100E609E7 /* attributes_without_text_content.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = attributes_without_text_content.xml; sourceTree = "<group>"; };
 		25FABEA314E3698100E609E7 /* channels.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = channels.xml; sourceTree = "<group>"; };
 		25FABEA414E3698100E609E7 /* container_attributes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = container_attributes.xml; sourceTree = "<group>"; };

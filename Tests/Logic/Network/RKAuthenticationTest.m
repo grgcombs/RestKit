@@ -37,7 +37,7 @@ static NSString* const RKAuthenticationTestPassword = @"authentication";
     RKClient* client = [RKTestFactory client];
     [client get:@"/authentication/none" delegate:loader];
     [loader waitForResponse];
-    assertThatBool([loader.response isOK], is(equalToBool(YES)));
+    assertThatBool([loader.rkResponse isOK], is(equalToBool(YES)));
 }
 
 - (void)testShouldAuthenticateViaHTTPAuthBasic {
@@ -47,7 +47,7 @@ static NSString* const RKAuthenticationTestPassword = @"authentication";
     client.password = RKAuthenticationTestPassword;
     [client get:@"/authentication/basic" delegate:loader];
     [loader waitForResponse];
-    assertThatBool([loader.response isOK], is(equalToBool(YES)));
+    assertThatBool([loader.rkResponse isOK], is(equalToBool(YES)));
 }
 
 - (void)testShouldFailAuthenticationWithInvalidCredentialsForHTTPAuthBasic {
@@ -57,10 +57,10 @@ static NSString* const RKAuthenticationTestPassword = @"authentication";
     client.password = @"INVALID";
     [client get:@"/authentication/basic" delegate:loader];
     [loader waitForResponse];
-    assertThatBool([loader.response isOK], is(equalToBool(NO)));
-    assertThatInteger([loader.response statusCode], is(equalToInt(0)));
+    assertThatBool([loader.rkResponse isOK], is(equalToBool(NO)));
+    assertThatInteger([loader.rkResponse statusCode], is(equalToInt(0)));
     assertThatInteger([loader.error code], is(equalToInt(NSURLErrorUserCancelledAuthentication)));
-    [loader.response.request cancel];
+    [loader.rkResponse.request cancel];
     [loader release];
 }
 
@@ -71,7 +71,7 @@ static NSString* const RKAuthenticationTestPassword = @"authentication";
     client.password = RKAuthenticationTestPassword;
     [client get:@"/authentication/digest" delegate:loader];
     [loader waitForResponse];
-    assertThatBool([loader.response isOK], is(equalToBool(YES)));
+    assertThatBool([loader.rkResponse isOK], is(equalToBool(YES)));
 }
 
 @end

@@ -75,8 +75,8 @@
     [request send];
     [loader waitForResponse];
     assertThatBool(loader.wasSuccessful, is(equalToBool(YES)));
-    assertThat([loader.response bodyEncodingName], is(nilValue()));
-    assertThatInteger([loader.response bodyEncoding], is(equalToInteger(NSISOLatin1StringEncoding)));
+    assertThat([loader.rkResponse bodyEncodingName], is(nilValue()));
+    assertThatInteger([loader.rkResponse bodyEncoding], is(equalToInteger(NSISOLatin1StringEncoding)));
 }
 
 - (void)testShouldAllowYouToChangeTheBaseURL {

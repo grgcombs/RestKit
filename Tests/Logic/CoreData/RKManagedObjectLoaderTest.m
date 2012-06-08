@@ -133,11 +133,11 @@
     RKObjectMapping* mapping = [RKManagedObjectMapping mappingForClass:[RKHuman class] inManagedObjectStore:store];
     RKManagedObjectLoader* objectLoader = [objectManager loaderWithResourcePath:@"/humans/1"];
     objectLoader.objectMapping = mapping;
-    RKResponse *response = [objectLoader sendSynchronously];
+    RKResponse *rkResponse = [objectLoader sendSynchronously];
 
     NSArray* humans = [RKHuman findAll];
     assertThatUnsignedInteger([humans count], is(equalToInt(1)));
-    assertThatInteger(response.statusCode, is(equalToInt(200)));
+    assertThatInteger(rkResponse.statusCode, is(equalToInt(200)));
 }
 
 - (void)testShouldSkipObjectMappingOnRequestCacheHitWhenObjectCachePresent {
@@ -179,7 +179,7 @@
         STAssertNoThrow([mockLoader verify], nil);
         assertThatInteger([RKHuman count:nil], is(equalToInteger(2)));
         assertThatBool([responseLoader wasSuccessful], is(equalToBool(YES)));
-        assertThatBool([responseLoader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThatBool([responseLoader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
         assertThatInteger([responseLoader.objects count], is(equalToInteger(2)));
     }
     {
@@ -195,7 +195,7 @@
         STAssertNoThrow([mockLoader verify], nil);
         assertThatInteger([RKHuman count:nil], is(equalToInteger(2)));
         assertThatBool([responseLoader wasSuccessful], is(equalToBool(YES)));
-        assertThatBool([responseLoader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThatBool([responseLoader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
         assertThatInteger([responseLoader.objects count], is(equalToInteger(2)));
     }
 }

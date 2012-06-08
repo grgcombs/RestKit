@@ -25,6 +25,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "RKRequestSerializable.h"
+#import "AFHTTPRequestOperation.h"
 
 @class RKRequestCache;
 
@@ -152,15 +153,13 @@ typedef enum {
 ///-----------------------------------------------------------------------------
 /// @name Block Declarations
 ///-----------------------------------------------------------------------------
-typedef void(^RKRequestDidLoadResponseBlock)(RKResponse *response);
+typedef void(^RKRequestDidLoadResponseBlock)(RKResponse *rkResponse);
 typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
 
 /**
  Models the request portion of an HTTP request/response cycle.
  */
-@interface RKRequest : NSObject {
-    BOOL _sentSynchronously;
-    NSURLConnection *_connection;
+@interface RKRequest : AFHTTPRequestOperation {
     id<RKRequestDelegate> _delegate;
     NSTimer *_timeoutTimer;
     RKRequestCachePolicy _cachePolicy;
@@ -170,7 +169,6 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
 
 #if TARGET_OS_IPHONE
     RKRequestBackgroundPolicy _backgroundPolicy;
-    UIBackgroundTaskIdentifier _backgroundTaskIdentifier;
 #endif
 }
 
@@ -194,27 +192,6 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
  @return An RKRequest object initialized with URL.
  */
 - (id)initWithURL:(NSURL *)URL;
-
-/**
- Creates and returns a RKRequest object initialized to load content from a
- provided URL with a specified delegate.
-
- @bug **DEPRECATED** in v0.10.0: Use [RKRequest requestWithURL:] instead
- @param URL The remote URL to load
- @param delegate The delegate that will handle the response callbacks.
- @return An autoreleased RKRequest object initialized with URL.
- */
-+ (RKRequest *)requestWithURL:(NSURL *)URL delegate:(id)delegate DEPRECATED_ATTRIBUTE;
-
-/**
- Initializes a RKRequest object to load from a provided URL
-
- @bug **DEPRECATED** in v0.10.0: Use [RKRequest initWithURL:] instead
- @param URL The remote URL to load
- @param delegate The delegate that will handle the response callbacks.
- @return An RKRequest object initialized with URL.
- */
-- (id)initWithURL:(NSURL *)URL delegate:(id)delegate DEPRECATED_ATTRIBUTE;
 
 
 ///-----------------------------------------------------------------------------
@@ -250,7 +227,7 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
 /**
  The response returned when the receiver was sent.
  */
-@property (nonatomic, retain, readonly) RKResponse *response;
+@property (nonatomic, retain, readonly) RKResponse *rkResponse;
 
 /**
  A serializable collection of parameters sent as the HTTP body of the request
@@ -261,13 +238,6 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
  A dictionary of additional HTTP Headers to send with the request
  */
 @property (nonatomic, retain) NSDictionary *additionalHTTPHeaders;
-
-/**
- The run loop mode under which the underlying NSURLConnection is performed
-
- *Default*: NSRunLoopCommonModes
- */
-@property (nonatomic, copy) NSString *runLoopMode;
 
 /**
  * An opaque pointer to associate user defined data with the request.
@@ -377,10 +347,6 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
  */
 @property (nonatomic, assign) RKRequestBackgroundPolicy backgroundPolicy;
 
-/**
- Returns the identifier of the task that has been sent to the background.
- */
-@property (nonatomic, readonly) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 #endif
 
 
@@ -609,31 +575,6 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
  */
 - (void)sendAsynchronously;
 
-/**
- Send the request synchronously and return a hydrated response object.
-
- @return An RKResponse object with the result of the request.
- */
-- (RKResponse *)sendSynchronously;
-
-/**
- Returns a Boolean value indicating whether the request has been cancelled.
-
- @return YES if the request was sent a cancel message, otherwise NO.
- */
-@property(nonatomic, assign, readonly, getter=isCancelled) BOOL cancelled;
-
-/**
- Cancels the underlying URL connection.
-
- This will call the requestDidCancel: delegate method if your delegate responds
- to it. This does not subsequently set the the request's delegate to nil.
- However, it's good practice to cancel the RKRequest and immediately set the
- delegate property to nil within the delegate's dealloc method.
-
- @see NSURLConnection:cancel
- */
-- (void)cancel;
 
 /**
  The reachability observer to consult for network status. Used for performing
@@ -673,7 +614,7 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
 
  @param response An RKResponse object with the result of the request.
  */
-- (void)didFinishLoad:(RKResponse *)response;
+- (void)didFinishLoad:(RKResponse *)rkResponse;
 
 
 ///-----------------------------------------------------------------------------
@@ -845,7 +786,7 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
  @param request The RKRequest object that was handling the loading.
  @param response The RKResponse object containing the result of the request.
  */
-- (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response;
+- (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)rkResponse;
 
 
 ///-----------------------------------------------------------------------------

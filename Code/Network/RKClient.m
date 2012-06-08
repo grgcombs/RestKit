@@ -225,7 +225,6 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 
     request.additionalRootCertificates = self.additionalRootCertificates;
     request.disableCertificateValidation = self.disableCertificateValidation;
-    request.runLoopMode = self.runLoopMode;
 
     // If a timeoutInterval was set on the client, we'll pass it on to the request.
     // Otherwise, we'll let the request default to its own timeout interval.

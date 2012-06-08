@@ -183,8 +183,8 @@ return __VA_ARGS__;                                                             
     return hasCredentials;
 }
 
-- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
-  if (nil == response || _request.followRedirect) {
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)rkResponse {
+  if (nil == rkResponse || _request.followRedirect) {
     RKLogDebug(@"Proceeding with request to %@", request);
     return request;
   } else {
@@ -270,11 +270,6 @@ return __VA_ARGS__;                                                             
 
 - (NSString *)bodyAsString {
     return [[[NSString alloc] initWithData:self.body encoding:[self bodyEncoding]] autorelease];
-}
-
-- (id)bodyAsJSON {
-    [NSException raise:nil format:@"Reimplemented as parsedBody"];
-    return nil;
 }
 
 - (id)parsedBody:(NSError**)error {

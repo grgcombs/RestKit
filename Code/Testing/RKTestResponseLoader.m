@@ -30,7 +30,7 @@ NSString * const RKTestResponseLoaderTimeoutException = @"RKTestResponseLoaderTi
 @interface RKTestResponseLoader ()
 
 @property (nonatomic, assign, getter = isAwaitingResponse) BOOL awaitingResponse;
-@property (nonatomic, retain, readwrite) RKResponse *response;
+@property (nonatomic, retain, readwrite) RKResponse *rkResponse;
 @property (nonatomic, copy, readwrite) NSError *error;
 @property (nonatomic, retain, readwrite) NSArray *objects;
 
@@ -38,7 +38,7 @@ NSString * const RKTestResponseLoaderTimeoutException = @"RKTestResponseLoaderTi
 
 @implementation RKTestResponseLoader
 
-@synthesize response;
+@synthesize rkResponse;
 @synthesize objects;
 @synthesize error;
 @synthesize successful;
@@ -62,8 +62,8 @@ NSString * const RKTestResponseLoaderTimeoutException = @"RKTestResponseLoaderTi
 }
 
 - (void)dealloc {
-    [response release];
-    response = nil;
+    [rkResponse release];
+    rkResponse = nil;
     [error release];
     error = nil;
     [objects release];
@@ -100,12 +100,12 @@ NSString * const RKTestResponseLoaderTimeoutException = @"RKTestResponseLoaderTi
     return nil;
 }
 
-- (void)request:(RKRequest *)request didReceiveResponse:(RKResponse *)response {
+- (void)request:(RKRequest *)request didReceiveResponse:(RKResponse *)rkResponse {
     // Implemented for expectations
 }
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)aResponse {
-    self.response = aResponse;
+    self.rkResponse = aResponse;
 
     // If request is an Object Loader, then objectLoader:didLoadObjects:
     // will be sent after didLoadResponse:
@@ -133,7 +133,7 @@ NSString * const RKTestResponseLoaderTimeoutException = @"RKTestResponseLoaderTi
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)theObjects {
-    RKLogTrace(@"%@ Loaded response for %@ with body: %@", self, objectLoader, [objectLoader.response bodyAsString]);
+    RKLogTrace(@"%@ Loaded response for %@ with body: %@", self, objectLoader, [objectLoader.rkResponse bodyAsString]);
     RKLogDebug(@"%@ Loaded objects for %@: %@", self, objectLoader, objects);
     self.objects = theObjects;
     awaitingResponse = NO;

@@ -759,9 +759,9 @@
     RKObjectLoader* objectLoader = [objectManager loaderWithResourcePath:@"/humans/1"];
     objectLoader.objectMapping = userMapping;
     [objectLoader sendSynchronously];
-    RKResponse *response = [objectLoader sendSynchronously];
+    RKResponse *rkResponse = [objectLoader sendSynchronously];
 
-    assertThatInteger(response.statusCode, is(equalToInt(200)));
+    assertThatInteger(rkResponse.statusCode, is(equalToInt(200)));
 }
 
 @end

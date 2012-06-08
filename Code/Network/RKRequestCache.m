@@ -134,15 +134,15 @@ static NSDateFormatter* __rfc1123DateFormatter;
 }
 
 - (RKResponse*)responseForRequest:(RKRequest*)request {
-    RKResponse* response = nil;
+    RKResponse* rkResponse = nil;
     NSString* cacheKey = [self pathForRequest:request];
     if (cacheKey) {
         NSData* responseData = [_cache dataForCacheKey:cacheKey];
         NSDictionary* responseHeaders = [_cache dictionaryForCacheKey:[cacheKey stringByAppendingPathExtension:RKRequestCacheHeadersExtension]];
-        response = [[[RKResponse alloc] initWithRequest:request body:responseData headers:responseHeaders] autorelease];
+        rkResponse = [[[RKResponse alloc] initWithRequest:request body:responseData headers:responseHeaders] autorelease];
     }
-    RKLogDebug(@"Found cached RKResponse '%@' for '%@'", response, request);
-    return response;
+    RKLogDebug(@"Found cached RKResponse '%@' for '%@'", rkResponse, request);
+    return rkResponse;
 }
 
 - (NSDictionary*)headersForRequest:(RKRequest*)request {

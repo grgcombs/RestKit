@@ -35,7 +35,7 @@
 /**
  The RKResponse object loaded from the RKRequest or RKObjectLoader the receiver is acting as the delegate for.
  **/
-@property (nonatomic, retain, readonly) RKResponse *response;
+@property (nonatomic, retain, readonly) RKResponse *rkResponse;
 
 /**
  The collection of objects loaded from the RKObjectLoader the receiver is acting as the delegate for.

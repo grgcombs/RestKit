@@ -207,7 +207,7 @@ typedef void(^RKObjectLoaderDidLoadObjectsDictionaryBlock)(NSDictionary *diction
 /**
  * The underlying response object for this loader
  */
-@property (nonatomic, retain, readonly) RKResponse *response;
+@property (nonatomic, retain, readonly) RKResponse *rkResponse;
 
 /**
  * The mapping result that was produced after the request finished loading and

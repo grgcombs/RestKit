@@ -68,8 +68,8 @@
     [params setValue:@"this is the value" forParam:@"test"];
     request.method = RKRequestMethodPOST;
     request.params = params;
-    RKResponse* response = [request sendSynchronously];
-    assertThatInteger(response.statusCode, is(equalToInt(200)));
+    RKResponse* rkResponse = [request sendSynchronously];
+    assertThatInteger(rkResponse.statusCode, is(equalToInt(200)));
 }
 
 #pragma mark - Basics
@@ -388,9 +388,9 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
         assertThat([cache etagForRequest:request], is(equalTo(@"686897696a7c876b7e")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -403,8 +403,8 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
     }
 }
 
@@ -431,9 +431,9 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
         assertThat([cache etagForRequest:request], is(equalTo(@"686897696a7c876b7e")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
         internalCacheDate1 = [cache cacheDateForRequest:request];
     }
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.5]];
@@ -448,8 +448,8 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
         internalCacheDate2 = [cache cacheDateForRequest:request];
     }
     assertThat(internalCacheDate1, isNot(internalCacheDate2));
@@ -476,8 +476,8 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -488,8 +488,8 @@ request.timeoutInterval = 1.0;
         request.cache = cache;
         request.delegate = loader;
         [request didFailLoadWithError:[NSError errorWithDomain:@"Fake" code:0 userInfo:nil]];
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
     }
 }
 
@@ -515,8 +515,8 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -527,8 +527,8 @@ request.timeoutInterval = 1.0;
         request.delegate = loader;
         [request sendAsynchronously];
         [loader waitForResponse];
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -539,8 +539,8 @@ request.timeoutInterval = 1.0;
         request.delegate = loader;
         [request sendAsynchronously];
         [loader waitForResponse];
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -552,8 +552,8 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached For 5 Seconds")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
     }
 }
 
@@ -579,8 +579,8 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -595,8 +595,8 @@ request.timeoutInterval = 1.0;
         BOOL returnValue = NO;
         [[[mock expect] andReturnValue:OCMOCK_VALUE(returnValue)] shouldDispatchRequest];
         [mock sendAsynchronously];
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
     }
 }
 
@@ -621,10 +621,10 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThat([loader.response bodyAsString], is(equalTo(@"This Should Get Cached")));
+        assertThat([loader.rkResponse bodyAsString], is(equalTo(@"This Should Get Cached")));
         NSLog(@"Headers: %@", [cache headersForRequest:request]);
         assertThat([cache etagForRequest:request], is(equalTo(@"686897696a7c876b7e")));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(NO)));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(NO)));
     }
     {
         RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
@@ -637,10 +637,10 @@ request.timeoutInterval = 1.0;
         [request sendAsynchronously];
         [loader waitForResponse];
         assertThatBool([loader wasSuccessful], is(equalToBool(YES)));
-        assertThatBool([loader.response wasLoadedFromCache], is(equalToBool(YES)));
-        assertThatInteger(loader.response.statusCode, is(equalToInt(200)));
-        assertThat(loader.response.MIMEType, is(equalTo(@"text/html")));
-        assertThat([loader.response.URL absoluteString], is(equalTo(@"http://127.0.0.1:4567/etags/cached")));
+        assertThatBool([loader.rkResponse wasLoadedFromCache], is(equalToBool(YES)));
+        assertThatInteger(loader.rkResponse.statusCode, is(equalToInt(200)));
+        assertThat(loader.rkResponse.MIMEType, is(equalTo(@"text/html")));
+        assertThat([loader.rkResponse.URL absoluteString], is(equalTo(@"http://127.0.0.1:4567/etags/cached")));
     }
 }
 
@@ -656,7 +656,7 @@ request.timeoutInterval = 1.0;
     loader.timeout = 20;
     [client post:@"/echo_params" params:params delegate:loader];
     [loader waitForResponse];
-    assertThat([loader.response bodyAsString], is(equalTo(@"{\"username\":\"hello\",\"password\":\"password\"}")));
+    assertThat([loader.rkResponse bodyAsString], is(equalTo(@"{\"username\":\"hello\",\"password\":\"password\"}")));
 }
 
 - (void)testShouldSetAnEmptyContentBodyWhenParamsIsNil {
@@ -687,7 +687,7 @@ request.timeoutInterval = 1.0;
     RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
     [client put:@"/ping" params:params delegate:loader];
     [loader waitForResponse];
-    assertThat([loader.response bodyAsString], is(equalTo(@"{\"username\":\"ddss\",\"email\":\"aaaa@aa.com\"}")));
+    assertThat([loader.rkResponse bodyAsString], is(equalTo(@"{\"username\":\"ddss\",\"email\":\"aaaa@aa.com\"}")));
 }
 
 - (void)testShouldAllowYouToChangeTheURL {
@@ -723,8 +723,8 @@ request.timeoutInterval = 1.0;
     NSURL *URL = [NSURL URLWithString:@"https://blakewatters.com/"];
     RKRequest *request = [RKRequest requestWithURL:URL];
     request.disableCertificateValidation = YES;
-    RKResponse *response = [request sendSynchronously];
-    assertThatBool([response isOK], is(equalToBool(YES)));
+    RKResponse *rkResponse = [request sendSynchronously];
+    assertThatBool([rkResponse isOK], is(equalToBool(YES)));
 }
 
 - (void)testShouldNotAddANonZeroContentLengthHeaderIfParamsIsSetAndThisIsAGETRequest {
@@ -760,7 +760,7 @@ request.timeoutInterval = 1.0;
     RKTestResponseLoader *responseLoader = [RKTestResponseLoader responseLoader];
     request.delegate = responseLoader;
     __block BOOL blockInvoked = NO;
-    request.onDidLoadResponse = ^ (RKResponse *response) {
+    request.onDidLoadResponse = ^ (RKResponse *rkResponse) {
         blockInvoked = YES;
     };
     [request sendAsynchronously];
@@ -774,7 +774,7 @@ request.timeoutInterval = 1.0;
     RKTestResponseLoader *responseLoader = [RKTestResponseLoader responseLoader];
     request.delegate = responseLoader;
     __block BOOL blockInvoked = NO;
-    request.onDidLoadResponse = ^ (RKResponse *response) {
+    request.onDidLoadResponse = ^ (RKResponse *rkResponse) {
         blockInvoked = YES;
     };
     [request sendAsynchronously];
@@ -870,8 +870,8 @@ request.timeoutInterval = 1.0;
     RKTestResponseLoader* loader = [RKTestResponseLoader responseLoader];
     RKRequest *request = [RKRequest requestWithURL:URL];
     __block RKResponse *blockResponse = nil;
-    request.onDidLoadResponse = ^ (RKResponse *response) {
-        blockResponse = response;
+    request.onDidLoadResponse = ^ (RKResponse *rkResponse) {
+        blockResponse = rkResponse;
     };
     request.delegate = loader;
     [request sendAsynchronously];
@@ -984,7 +984,7 @@ request.timeoutInterval = 1.0;
     request.delegate = loader;
     [request sendAsynchronously];
     [loader waitForResponse];
-    assertThat(request.response, is(nilValue()));
+    assertThat(request.rkResponse, is(nilValue()));
 }
 
 - (void)testAvailabilityOfResponseWhenFailedDueTo500Response {
@@ -994,8 +994,8 @@ request.timeoutInterval = 1.0;
     request.delegate = responseLoader;
     [request sendAsynchronously];
     [responseLoader waitForResponse];
-    assertThat(request.response, is(notNilValue()));
-    assertThatInteger(request.response.statusCode, is(equalToInteger(500)));
+    assertThat(request.rkResponse, is(notNilValue()));
+    assertThatInteger(request.rkResponse.statusCode, is(equalToInteger(500)));
 }
 
 @end

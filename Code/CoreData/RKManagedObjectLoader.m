@@ -149,7 +149,7 @@
 
 // NOTE: We are on the background thread here, be mindful of Core Data's threading needs
 - (void)processMappingResult:(RKObjectMappingResult*)result {
-    NSAssert(_sentSynchronously || ![NSThread isMainThread], @"Mapping result processing should occur on a background thread");
+    NSAssert(![NSThread isMainThread], @"Mapping result processing should occur on a background thread");
     if (_targetObjectID && self.targetObject && self.method == RKRequestMethodDELETE) {
         NSManagedObject* backgroundThreadObject = [self.objectStore objectWithID:_targetObjectID];
         RKLogInfo(@"Deleting local object %@ due to DELETE request", backgroundThreadObject);
@@ -157,7 +157,7 @@
     }
 
     // If the response was successful, save the store...
-    if ([self.response isSuccessful]) {
+    if ([self.rkResponse isSuccessful]) {
         [self deleteCachedObjectsMissingFromResult:result];
         NSError *error = nil;
         BOOL success = [self.objectStore save:&error];
@@ -209,7 +209,7 @@
 }
 
 - (BOOL)isResponseMappable {
-    if ([self.response wasLoadedFromCache]) {
+    if ([self.rkResponse wasLoadedFromCache]) {
         NSArray* cachedObjects = [self cachedObjects];
         if (! cachedObjects) {
             RKLogDebug(@"Skipping managed object mapping optimization -> Managed object cache returned nil cachedObjects for resourcePath: %@", self.resourcePath);
