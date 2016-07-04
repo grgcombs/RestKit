@@ -10,11 +10,8 @@
 
 #import <objc/runtime.h>
 #import "NSManagedObject+ActiveRecord.h"
-#import "../ObjectMapping/RKObjectManager.h"
-#import "../Support/RKLog.h"
-#import "../Support/RKFixCategoryBug.h"
-
-RK_FIX_CATEGORY_BUG(NSManagedObject_ActiveRecord)
+#import "RKObjectManager.h"
+#import "RKLog.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -129,7 +126,7 @@ static NSNumber *defaultBatchSize = nil;
 {
 	@synchronized(defaultBatchSize)
 	{
-		defaultBatchSize = [NSNumber numberWithInt:newBatchSize];
+		defaultBatchSize = [NSNumber numberWithUnsignedInteger:newBatchSize];
 	}
 }
 
@@ -249,7 +246,7 @@ static NSNumber *defaultBatchSize = nil;
 			}
 			else
 			{
-				RKLogError(@"Property '%@' not found in %@ properties for %@", propertyName, [propDict count], NSStringFromClass(self));
+				RKLogError(@"Property '%@' not found in %d properties for %@", propertyName, (int)[propDict count], NSStringFromClass(self));
 			}
 		}
 	}
@@ -334,7 +331,7 @@ static NSNumber *defaultBatchSize = nil;
 	NSUInteger count = [context countForFetchRequest:request error:&error];
 	[self handleErrors:error];
 
-	return [NSNumber numberWithUnsignedInt:count];
+	return [NSNumber numberWithUnsignedInteger:count];
 }
 
 + (NSNumber *)numberOfEntitiesWithPredicate:(NSPredicate *)searchTerm;

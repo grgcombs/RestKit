@@ -18,6 +18,9 @@
 //  limitations under the License.
 //
 
+#ifndef RKObjectAttributeMapping_h
+#define RKObjectAttributeMapping_h "RKObjectAttributeMapping.h"
+
 #import <Foundation/Foundation.h>
 
 // Defines the rules for mapping a particular element
@@ -47,3 +50,5 @@
 - (BOOL)isMappingForKeyOfNestedDictionary;
 
 @end
+
+#endif

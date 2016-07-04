@@ -18,7 +18,10 @@
 //  limitations under the License.
 //
 
-#import "../Network/Network.h"
+#ifndef RKObjectLoader_h
+#define RKObjectLoader_h "RKObjectLoader.h"
+
+#import "Network.h"
 #import "RKObjectMapping.h"
 #import "RKObjectMappingResult.h"
 #import "RKObjectMappingProvider.h"
@@ -36,6 +39,8 @@
 - (void)objectLoader:(RKObjectLoader*)objectLoader didFailWithError:(NSError*)error;
 
 @optional
+
+- (void)willSendWithObjectLoader:(RKObjectLoader *)loader;
 
 /**
  When implemented, sent to the delegate when the object laoder has completed successfully
@@ -218,3 +223,5 @@
 - (void)handleResponseError;
 
 @end
+
+#endif

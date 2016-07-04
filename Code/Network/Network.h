@@ -18,12 +18,21 @@
 //  limitations under the License.
 //
 
-#import "RKClient.h"
-#import "RKURL.h"
-#import "RKRequest.h"
-#import "RKResponse.h"
-#import "RKRequestSerializable.h"
-#import "RKReachabilityObserver.h"
-#import "RKRequestQueue.h"
-#import "RKNotifications.h"
-#import "RKOAuthClient.h"
+#ifndef RK_Network_h
+#define RK_Network_h "Network.h"
+
+#import <SLFRestKit/RKClient.h>
+#import <SLFRestKit/RKURL.h>
+#import <SLFRestKit/RKRequest.h>
+#import <SLFRestKit/RKResponse.h>
+#import <SLFRestKit/RKRequestSerialization.h>
+#import <SLFRestKit/RKRequestSerializable.h>
+#import <SLFRestKit/RKReachabilityObserver.h>
+#import <SLFRestKit/RKRequestQueue.h>
+#import <SLFRestKit/RKNotifications.h>
+#import <SLFRestKit/RKOAuthClient.h>
+#import <SLFRestKit/NSObject+URLEncoding.h>
+#import <SLFRestKit/NSData+MD5.h>
+#import <SLFRestKit/NSString+MD5.h>
+
+#endif

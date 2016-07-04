@@ -275,7 +275,12 @@
         if ([keyPath isEqualToString:@""]) {
             mappableValue = self.sourceObject;
         } else {
-            mappableValue = [self.sourceObject valueForKeyPath:keyPath];
+            @try {
+                mappableValue = [self.sourceObject valueForKeyPath:keyPath];
+            } @catch (NSException *exception) {
+                RKLogError(@"Exception while attempting to find mappable values in sourceObject for key path '%@': %@", keyPath, exception);
+                mappableValue = nil;
+            }
         }
 
         // Not found...

@@ -32,26 +32,50 @@ _lcl_level_narrow_t _lcl_component_level[_lcl_component_t_count];
 
 // Log component identifiers, indexed by log component.
 const char * const _lcl_component_identifier[] = {
-#   define  _lcl_component(_identifier, _header, _name)                        \
-    #_identifier,
-#   include "lcl_config_components.h"
-#   undef   _lcl_component
+    "RestKit",
+    "RestKitNetwork",
+    "RestKitNetworkCache",
+    "RestKitNetworkQueue",
+    "RestKitNetworkReachability",
+    "RestKitObjectMapping",
+    "RestKitCoreData",
+    "RestKitCoreDataSearchEngine",
+    "RestKitSupport",
+    "RestKitSupportParsers",
+    "RestKitUI",
+    "App",
 };
 
 // Log component headers, indexed by log component.
 const char * const _lcl_component_header[] = {
-#   define  _lcl_component(_identifier, _header, _name)                        \
-    _header,
-#   include "lcl_config_components.h"
-#   undef   _lcl_component
+    "restkit",
+    "restkit.network",
+    "restkit.network.cache",
+    "restkit.network.queue",
+    "restkit.network.reachability",
+    "restkit.object"
+    "restkit.core_data",
+    "restkit.core_data.search_engine",
+    "restkit.support",
+    "restkit.support.parsers",
+    "restkit.ui",
+    "app",
 };
 
 // Log component names, indexed by log component.
 const char * const _lcl_component_name[] = {
-#   define  _lcl_component(_identifier, _header, _name)                        \
-    _name,
-#   include "lcl_config_components.h"
-#   undef   _lcl_component
+    "RestKit",
+    "RestKit/Network",
+    "RestKit/Network/Cache",
+    "RestKit/Network/Queue",
+    "RestKit/Network/Reachability",
+    "RestKit/ObjectMapping",
+    "RestKit/CoreData",
+    "RestKit/CoreData/SearchEngine",
+    "RestKit/Support",
+    "RestKit/Support/Parsers",
+    "RestKit/UI",
+    "App",
 };
 
 // Log level headers, indexed by log level.

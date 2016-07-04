@@ -18,13 +18,18 @@
 //  limitations under the License.
 //
 
+#ifndef RK_Support_h
+#define RK_Support_h "Support.h"
+
 // Load shared support code
-#import "RKError.h"
-#import "RKMIMETypes.h"
-#import "RKLog.h"
+#import <SLFRestKit/RKError.h>
+#import <SLFRestKit/RKMIMETypes.h>
+#import <SLFRestKit/RKLog.h>
 
 // Load our categories
-#import "NSDictionary+RKAdditions.h"
-#import "NSString+RestKit.h"
-#import "RKPathMatcher.h"
-#import "RKDotNetDateFormatter.h"
+#import <SLFRestKit/NSDictionary+RKAdditions.h>
+#import <SLFRestKit/NSString+RestKit.h>
+#import <SLFRestKit/RKPathMatcher.h>
+#import <SLFRestKit/NSURL+RestKit.h>
+
+#endif

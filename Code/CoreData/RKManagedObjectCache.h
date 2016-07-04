@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef RKManagedObjectCache_h
+#define RKManagedObjectCache_h "RKManagedObjectCache.h"
+
 /**
  * Class used for determining the set of NSFetchRequest objects that
  * map to a given request URL.
@@ -21,3 +24,5 @@
 - (NSFetchRequest*)fetchRequestForResourcePath:(NSString*)resourcePath;
 
 @end
+
+#endif

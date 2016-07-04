@@ -18,6 +18,9 @@
 //  limitations under the License.
 //
 
+#ifndef RKObjectRelationshipMapping_h
+#define RKObjectRelationshipMapping_h "RKObjectRelationshipMapping.h"
+
 #import <Foundation/Foundation.h>
 #import "RKObjectAttributeMapping.h"
 #import "RKObjectMappingDefinition.h"
@@ -37,3 +40,5 @@
 + (RKObjectRelationshipMapping*)mappingFromKeyPath:(NSString*)sourceKeyPath toKeyPath:(NSString*)destinationKeyPath withMapping:(id<RKObjectMappingDefinition>)objectOrDynamicMapping reversible:(BOOL)reversible;
 
 @end
+
+#endif

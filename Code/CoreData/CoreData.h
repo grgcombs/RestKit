@@ -18,13 +18,21 @@
 //  limitations under the License.
 //
 
+#ifndef RK_CoreData_h
+#define RK_CoreData_h "CoreData.h"
+
 #import <CoreData/CoreData.h>
-#import "../ObjectMapping/ObjectMapping.h"
-#import "NSManagedObject+ActiveRecord.h"
-#import "RKManagedObjectStore.h"
-#import "RKManagedObjectSeeder.h"
-#import "RKManagedObjectCache.h"
-#import "RKManagedObjectMapping.h"
-#import "RKObjectPropertyInspector+CoreData.h"
-#import "RKSearchableManagedObject.h"
-#import "RKSearchWord.h"
+#import <SLFRestKit/ObjectMapping.h>
+#import <SLFRestKit/NSManagedObject+ActiveRecord.h>
+#import <SLFRestKit/RKManagedObjectStore.h>
+#import <SLFRestKit/RKManagedObjectSeeder.h>
+#import <SLFRestKit/RKManagedObjectCache.h>
+#import <SLFRestKit/RKManagedObjectMapping.h>
+#import <SLFRestKit/RKObjectPropertyInspector+CoreData.h>
+#import <SLFRestKit/RKSearchableManagedObject.h>
+#import <SLFRestKit/RKSearchWord.h>
+#import <SLFRestKit/RKManagedObjectThreadSafeInvocation.h>
+#import <SLFRestKit/RKManagedObjectMappingOperation.h>
+#import <SLFRestKit/RKManagedObjectLoader.h>
+
+#endif

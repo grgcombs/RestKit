@@ -26,10 +26,10 @@
 #import "RKParserRegistry.h"
 #import "RKObjectSerializer.h"
 
-#import "../Support/RKError.h"
-#import "../Support/RKParser.h"
-#import "../Network/RKNotifications.h"
-#import "../Network/RKRequest_Internals.h"
+#import "RKError.h"
+#import "RKParser.h"
+#import "RKNotifications.h"
+#import "RKRequest_Internals.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -269,7 +269,7 @@
         return NO;
 	} else if (NO == [self canParseMIMEType:[self.response MIMEType]]) {
         // We can't parse the response, it's unmappable regardless of the status code
-        RKLogWarning(@"Encountered unexpected response with status code: %d (MIME Type: %@ -> URL: %@)", self.response.statusCode, self.response.MIMEType, self.URL);
+        RKLogWarning(@"Encountered unexpected response with status code: %d (MIME Type: %@ -> URL: %@)", (int)self.response.statusCode, self.response.MIMEType, self.URL);
         NSError* error = [NSError errorWithDomain:RKErrorDomain code:RKObjectLoaderUnexpectedResponseError userInfo:nil];
         if ([_delegate respondsToSelector:@selector(objectLoaderDidLoadUnexpectedResponse:)]) {
             [(NSObject<RKObjectLoaderDelegate>*)_delegate objectLoaderDidLoadUnexpectedResponse:self];

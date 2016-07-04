@@ -20,10 +20,6 @@
 
 #import "NSDictionary+RKRequestSerialization.h"
 #import "NSString+RestKit.h"
-#import "../Support/RKFixCategoryBug.h"
-
-RK_FIX_CATEGORY_BUG(NSDictionary_RKRequestSerialization)
-
 
 @implementation NSDictionary (RKRequestSerialization)
 

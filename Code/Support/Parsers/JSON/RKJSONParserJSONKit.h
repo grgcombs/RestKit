@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "../../RKParser.h"
+#import <SLFRestKit/RKParser.h>
 
 @interface RKJSONParserJSONKit : NSObject <RKParser> {
 }

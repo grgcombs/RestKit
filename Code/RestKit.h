@@ -18,9 +18,17 @@
 //  limitations under the License.
 //
 
-#import "Network/Network.h"
-#import "Support/Support.h"
-#import "ObjectMapping/ObjectMapping.h"
+#import <SLFRestKit/Network.h>
+#import <SLFRestKit/Support.h>
+#import <SLFRestKit/ObjectMapping.h>
+#import <SLFRestKit/CoreData.h>
+#import <SLFRestKit/UI.h>
+#import <SLFRestKit/RKRouter.h>
+#import <SLFRestKit/RKSearchWordObserver.h>
+#import <SLFRestKit/RKObjectMapperError.h>
+#import <SLFRestKit/RKJSONParserJSONKit.h>
+#import <SLFRestKit/RKDynamicObjectMappingMatcher.h>
+#import <SLFRestKit/RKAlert.h>
 
 /**
  Set the App logging component. This header

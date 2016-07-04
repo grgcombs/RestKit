@@ -18,8 +18,13 @@
 //  limitations under the License.
 //
 
+#ifndef RKObjectMappingDefinition_h
+#define RKObjectMappingDefinition_h "RKObjectMappingDefinition.h"
+
 @protocol RKObjectMappingDefinition <NSObject>
 
 - (BOOL)forceCollectionMapping;
 
 @end
+
+#endif

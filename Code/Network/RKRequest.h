@@ -18,11 +18,13 @@
 //  limitations under the License.
 //
 
+#ifndef RKRequest_h
+#define RKRequest_h "RKRequest.h"
+
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #endif
 
-#import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "RKRequestSerializable.h"
 
@@ -32,12 +34,16 @@
  * HTTP methods for requests
  */
 typedef enum RKRequestMethod {
-    RKRequestMethodGET = 0,
+    RKRequestMethodInvalid = -1,
+    RKRequestMethodGET,
     RKRequestMethodPOST,
     RKRequestMethodPUT,
     RKRequestMethodDELETE,
     RKRequestMethodHEAD
 } RKRequestMethod;
+
+NSString *RKRequestMethodNameFromType(RKRequestMethod);
+RKRequestMethod RKRequestMethodTypeFromName(NSString *);
 
 /**
  * Cache policy for determining how to use RKCache
@@ -165,8 +171,8 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
  */
 @property(nonatomic, assign) id<RKRequestDelegate> delegate;
 
-@property(nonatomic, retain) RKRequestDidLoadResponseBlock onDidLoadResponse;
-@property(nonatomic, retain) RKRequestDidFailLoadWithErrorBlock onDidFailLoadWithError;
+@property(nonatomic, copy) RKRequestDidLoadResponseBlock onDidLoadResponse;
+@property(nonatomic, copy) RKRequestDidFailLoadWithErrorBlock onDidFailLoadWithError;
 
 /**
  * A Dictionary of additional HTTP Headers to send with the request
@@ -492,3 +498,5 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
 - (void)requestDidTimeout:(RKRequest *)request;
 
 @end
+
+#endif

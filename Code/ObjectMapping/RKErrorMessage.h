@@ -1,5 +1,5 @@
 //
-//  RKError.h
+//  RKErrorMessage.h
 //  RestKit
 //
 //  Created by Jeremy Ellison on 5/10/11.
@@ -18,6 +18,9 @@
 //  limitations under the License.
 //
 
+#ifndef RKErrorMessage_h
+#define RKErrorMessage_h "RKErrorMessage.h"
+
 #import <Foundation/Foundation.h>
 
 /**
@@ -33,3 +36,5 @@
 @property (nonatomic, retain) NSString* errorMessage;
 
 @end
+
+#endif

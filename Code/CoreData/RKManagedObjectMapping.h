@@ -18,8 +18,11 @@
 //  limitations under the License.
 //
 
+#ifndef RKManagedObjectMapping_h
+#define RKManagedObjectMapping_h "RKManagedObjectMapping.h"
+
 #import <CoreData/CoreData.h>
-#import "../ObjectMapping/RKObjectMapping.h"
+#import "RKObjectMapping.h"
 #import "RKManagedObjectStore.h"
 
 @interface RKManagedObjectMapping : RKObjectMapping {
@@ -144,3 +147,5 @@
 - (id)defaultValueForMissingAttribute:(NSString *)attributeName;
 
 @end
+
+#endif

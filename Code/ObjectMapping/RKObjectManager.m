@@ -20,9 +20,9 @@
 
 #import "RKObjectManager.h"
 #import "RKObjectSerializer.h"
-#import "../CoreData/RKManagedObjectStore.h"
-#import "../CoreData/RKManagedObjectLoader.h"
-#import "../Support/Support.h"
+#import "RKManagedObjectStore.h"
+#import "RKManagedObjectLoader.h"
+#import "Support.h"
 #import "RKErrorMessage.h"
 
 NSString* const RKObjectManagerDidBecomeOfflineNotification = @"RKDidEnterOfflineModeNotification";
@@ -67,7 +67,7 @@ static dispatch_queue_t defaultMappingQueue = nil;
     }
 }
 
-- (id)initWithBaseURL:(NSString*)baseURL {
+- (instancetype)initWithBaseURL:(NSURL *)baseURL {
     self = [super init];
 	if (self) {
         _mappingProvider = [RKObjectMappingProvider new];
@@ -105,7 +105,7 @@ static dispatch_queue_t defaultMappingQueue = nil;
 	sharedManager = manager;
 }
 
-+ (RKObjectManager*)objectManagerWithBaseURL:(NSString*)baseURL {
++ (instancetype)objectManagerWithBaseURL:(NSURL *)baseURL {
 	RKObjectManager* manager = [[[self alloc] initWithBaseURL:baseURL] autorelease];
 	if (nil == sharedManager) {
 		[RKObjectManager setSharedManager:manager];

@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "../ObjectMapping/RKObjectPropertyInspector.h"
+#import <SLFRestKit/RKObjectPropertyInspector.h>
 
 @interface RKObjectPropertyInspector (CoreData)
 

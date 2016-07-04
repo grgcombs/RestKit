@@ -19,7 +19,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "../ObjectMapping/RKObjectMapping.h"
+#import <SLFRestKit/RKObjectMapping.h>
 
 /** @name Cell Mapping Block Callbacks **/
 
@@ -50,6 +50,12 @@ typedef void(^RKTableViewCellBlock)(UITableViewCell *cell);
 @protected
     NSMutableArray *_prepareCellBlocks;
 }
+
+/**
+ Returns a dequeued (previously registered) table cell that can be used to apply 
+ this object mapping given a set of mappable data. For transient objects.
+ */
+- (id)mappableObjectForData:(UITableView*)tableView forIndexPath:(NSIndexPath *)indexPath;
 
 /**
  The UITableViewCell subclass that this mapping will target. This

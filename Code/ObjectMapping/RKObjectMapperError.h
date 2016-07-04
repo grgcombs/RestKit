@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "../Support/RKError.h"
+#import <SLFRestKit/RKError.h>
 
 typedef enum {
     RKObjectMapperErrorObjectMappingNotFound        = 1001,     // No mapping found

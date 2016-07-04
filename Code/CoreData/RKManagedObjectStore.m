@@ -21,10 +21,11 @@
 #import "RKManagedObjectStore.h"
 #import "NSManagedObject+ActiveRecord.h"
 #import "RKSearchWordObserver.h"
-#import "../ObjectMapping/RKObjectPropertyInspector.h"
+#import "RKsearchWord.h"
+#import "RKObjectPropertyInspector.h"
 #import "RKObjectPropertyInspector+CoreData.h"
-#import "../Support/RKAlert.h"
-#import "../Support/RKLog.h"
+#import "RKAlert.h"
+#import "RKLog.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -35,7 +36,6 @@ static NSString* const RKManagedObjectStoreThreadDictionaryContextKey = @"RKMana
 static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RKManagedObjectStoreThreadDictionaryEntityCacheKey";
 
 @interface RKManagedObjectStore (Private)
-- (id)initWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)nilOrDirectoryPath usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate;
 - (void)createPersistentStoreCoordinator;
 - (void)createStoreIfNecessaryUsingSeedDatabase:(NSString*)seedDatabase;
 - (NSString *)applicationDataDirectory;
@@ -51,23 +51,24 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectCache = _managedObjectCache;
 
-+ (RKManagedObjectStore*)objectStoreWithStoreFilename:(NSString*)storeFilename {
++ (instancetype)objectStoreWithStoreFilename:(NSString*)storeFilename {
     return [self objectStoreWithStoreFilename:storeFilename usingSeedDatabaseName:nil managedObjectModel:nil delegate:nil];
 }
 
-+ (RKManagedObjectStore*)objectStoreWithStoreFilename:(NSString *)storeFilename usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate {
++ (instancetype)objectStoreWithStoreFilename:(NSString *)storeFilename usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate {
     return [[[self alloc] initWithStoreFilename:storeFilename inDirectory:nil usingSeedDatabaseName:nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:nilOrManagedObjectModel delegate:delegate] autorelease];
 }
 
-+ (RKManagedObjectStore*)objectStoreWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)directory usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate {
++ (instancetype)objectStoreWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)directory usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate {
     return [[[self alloc] initWithStoreFilename:storeFilename inDirectory:directory usingSeedDatabaseName:nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:nilOrManagedObjectModel delegate:delegate] autorelease];
 }
 
-- (id)initWithStoreFilename:(NSString*)storeFilename {
+- (instancetype)initWithStoreFilename:(NSString*)storeFilename {
 	return [self initWithStoreFilename:storeFilename inDirectory:nil usingSeedDatabaseName:nil managedObjectModel:nil delegate:nil];
 }
 
-- (id)initWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)nilOrDirectoryPath usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate {
+- (instancetype)initWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)nilOrDirectoryPath usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate
+{
     self = [self init];
 	if (self) {
 		_storeFilename = [storeFilename retain];
@@ -84,22 +85,43 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
             // NOTE: allBundles permits Core Data setup in unit tests
 			nilOrManagedObjectModel = [NSManagedObjectModel mergedModelFromBundles:[NSBundle allBundles]];
         }
-		NSMutableArray* allManagedObjectModels = [[NSMutableArray alloc] init];
-		[allManagedObjectModels addObject:nilOrManagedObjectModel];
 
-		NSString* rkBundlePath = [[NSBundle mainBundle] pathForResource:@"RestKitResources"
-																 ofType:@"bundle"];
-		NSURL* rkCoreDataLibraryMOMURL = [[NSBundle bundleWithPath:rkBundlePath] URLForResource:@"RestKitCoreData"
-																				  withExtension:@"momd"];
-		NSManagedObjectModel* rkCoreDataLibraryMOM = [[NSManagedObjectModel alloc] initWithContentsOfURL:rkCoreDataLibraryMOMURL];
-        if (rkCoreDataLibraryMOM) {
-            [allManagedObjectModels addObject:rkCoreDataLibraryMOM];
-            [rkCoreDataLibraryMOM release];
-        } else {
-            RKLogWarning(@"Unable to find RestKitCoreData.momd within the RestKitCoreDataBundle.bundle");
+		NSMutableArray* allManagedObjectModels = [[NSMutableArray alloc] init];
+
+        BOOL needRestKitResources = YES;
+
+        if (nilOrManagedObjectModel)
+        {
+            [allManagedObjectModels addObject:nilOrManagedObjectModel];
+            NSDictionary *entities = [nilOrManagedObjectModel entitiesByName];
+            NSEntityDescription *searchWord = entities[@"RKSearchWord"];
+            NSEntityDescription *searchObject = entities[@"RKSearchableManagedObject"];
+            if (searchWord || searchObject) {
+                needRestKitResources = NO;
+            }
         }
 
-		_managedObjectModel = [[NSManagedObjectModel modelByMergingModels:allManagedObjectModels] retain];
+        if (needRestKitResources) {
+            NSString *rkBundlePath = [[NSBundle mainBundle] pathForResource:@"SLFRestKit" ofType:@".framework" inDirectory:@"Frameworks"];
+            NSURL* rkCoreDataLibraryMOMURL = [[NSBundle bundleWithPath:rkBundlePath] URLForResource:@"RestKitCoreData" withExtension:@"momd"];
+            if (rkCoreDataLibraryMOMURL) {
+                NSManagedObjectModel* rkCoreDataLibraryMOM = [[NSManagedObjectModel alloc] initWithContentsOfURL:rkCoreDataLibraryMOMURL];
+                if (rkCoreDataLibraryMOM) {
+                    [allManagedObjectModels addObject:rkCoreDataLibraryMOM];
+                    [rkCoreDataLibraryMOM release];
+                    rkCoreDataLibraryMOM = nil;
+                } else {
+                    RKLogWarning(@"Unable to find RestKitCoreData.momd within the RestKitCoreDataBundle.bundle");
+                }
+            }
+        }
+
+        if (allManagedObjectModels.count == 1) {
+            _managedObjectModel = [allManagedObjectModels[0] retain];
+        }
+        else if (allManagedObjectModels.count > 1) {
+            _managedObjectModel = [[NSManagedObjectModel modelByMergingModels:allManagedObjectModels] retain];
+        }
 		[allManagedObjectModels release];
 
         if (nilOrNameOfSeedDatabaseInMainBundle) {
@@ -243,7 +265,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
 	NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] init];
 	[managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
 	[managedObjectContext setUndoManager:nil];
-	[managedObjectContext setMergePolicy:NSOverwriteMergePolicy];
+	[managedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(objectsDidChange:)
@@ -279,9 +301,8 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_managedObjectModel];
 
 	// Allow inferred migration from the original version of the application.
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption:@YES,
+                              NSInferMappingModelAutomaticallyOption:@YES};
 
 	if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error]) {
 		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(managedObjectStore:didFailToCreatePersistentStoreCoordinatorWithError:)]) {
@@ -398,7 +419,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
     
 #if TARGET_OS_IPHONE
 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     return basePath;
 
@@ -475,7 +496,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
         [fetchRequest setResultType:NSManagedObjectIDResultType];
 
         objectIds = [NSManagedObject executeFetchRequest:fetchRequest];
-        RKLogInfo(@"Caching all %d %@ objectsIDs to thread local storage", [objectIds count], entity.name);
+        RKLogInfo(@"Caching all %d %@ objectsIDs to thread local storage", (int)[objectIds count], entity.name);
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionary];
         if ([objectIds count] > 0) {
             BOOL coerceToString = [self shouldCoerceAttributeToString:primaryKeyAttribute forEntity:entity];

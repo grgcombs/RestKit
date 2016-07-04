@@ -154,7 +154,7 @@ extern NSString* cacheURLKey;
 		[[challenge sender] useCredential:newCredential
 		       forAuthenticationChallenge:challenge];
 	} else {
-	    RKLogWarning(@"Failed authentication challenge after %d failures", [challenge previousFailureCount]);
+	    RKLogWarning(@"Failed authentication challenge after %d failures", (int)[challenge previousFailureCount]);
 		[[challenge sender] cancelAuthenticationChallenge:challenge];
 	}
 }
@@ -188,12 +188,12 @@ extern NSString* cacheURLKey;
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[_body appendData:data];
     if ([[_request delegate] respondsToSelector:@selector(request:didReceivedData:totalBytesReceived:totalBytesExectedToReceive:)]) {
-        [[_request delegate] request:_request didReceivedData:[data length] totalBytesReceived:[_body length] totalBytesExectedToReceive:_httpURLResponse.expectedContentLength];
+        [[_request delegate] request:_request didReceivedData:[data length] totalBytesReceived:[_body length] totalBytesExectedToReceive:(NSInteger)_httpURLResponse.expectedContentLength];
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response {
-    RKLogDebug(@"NSHTTPURLResponse Status Code: %d", [response statusCode]);
+    RKLogDebug(@"NSHTTPURLResponse Status Code: %d", (int)[response statusCode]);
     RKLogDebug(@"Headers: %@", [response allHeaderFields]);
 	_httpURLResponse = [response retain];
 }
@@ -239,7 +239,7 @@ extern NSString* cacheURLKey;
 }
 
 - (id)bodyAsJSON {
-    [NSException raise:nil format:@"Reimplemented as parsedBody"];
+    [NSException raise:@"Parse Error" format:@"Reimplemented as parsedBody"];
     return nil;
 }
 

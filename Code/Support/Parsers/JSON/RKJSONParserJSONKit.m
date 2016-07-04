@@ -19,7 +19,7 @@
 //
 
 #import "RKJSONParserJSONKit.h"
-#import "JSONKit.h"
+#import <SLFRestKit/JSONKit.h>
 #import "RKLog.h"
 
 // Set Logging Component

@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "../Network/RKRequestSerializable.h"
+#import <SLFRestKit/RKRequestSerializable.h>
 
 /**
  A simple implementation of the RKRequestSerializable protocol suitable

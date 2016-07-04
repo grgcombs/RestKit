@@ -22,12 +22,12 @@
 #import "RKSearchableManagedObject.h"
 
 
-@interface RKSearchWord : NSManagedObject {
-
-}
+@interface RKSearchWord : NSManagedObject
 
 @property (nonatomic, retain) NSString* word;
 @property (nonatomic, retain) NSSet* searchableManagedObjects;
+
++ (NSString *)primaryKeyProperty;
 
 @end
 

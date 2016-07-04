@@ -24,8 +24,8 @@
 #import "RKObjectPropertyInspector.h"
 #import "RKObjectRelationshipMapping.h"
 #import "RKObjectMapper.h"
-#import "../Support/RKError.h"
-#import "../Support/RKLog.h"
+#import "RKError.h"
+#import "RKLog.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -68,7 +68,8 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
 @synthesize delegate = _delegate;
 @synthesize queue = _queue;
 
-+ (RKObjectMappingOperation*)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(id<RKObjectMappingDefinition>)objectMapping {
++ (instancetype)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(id<RKObjectMappingDefinition>)objectMapping
+{
     return [[[self alloc] initWithSourceObject:sourceObject destinationObject:destinationObject mapping:objectMapping] autorelease];
 }
 
@@ -173,18 +174,19 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
     } else if ([sourceType isSubclassOfClass:[NSNumber class]] && [destinationType isSubclassOfClass:[NSDecimalNumber class]]) {
         // Number -> Decimal Number
         return [NSDecimalNumber decimalNumberWithDecimal:[value decimalValue]];
-    } else if ( ([sourceType isSubclassOfClass:NSClassFromString(@"__NSCFBoolean")] ||
-                 [sourceType isSubclassOfClass:NSClassFromString(@"NSCFBoolean")] ) &&
-               [destinationType isSubclassOfClass:[NSString class]]) {
-        return ([value boolValue] ? @"true" : @"false");
-        if ([destinationType isSubclassOfClass:[NSDate class]]) {
-            return [NSDate dateWithTimeIntervalSince1970:[(NSNumber*)value intValue]];
-        } else if (([sourceType isSubclassOfClass:NSClassFromString(@"__NSCFBoolean")] || [sourceType isSubclassOfClass:NSClassFromString(@"NSCFBoolean")]) && [destinationType isSubclassOfClass:[NSString class]]) {
+    } else if ([sourceType isSubclassOfClass:NSClassFromString(@"__NSCFBoolean")] ||
+               [sourceType isSubclassOfClass:NSClassFromString(@"NSCFBoolean")] ) {
+        if ([destinationType isSubclassOfClass:[NSString class]]) {
             return ([value boolValue] ? @"true" : @"false");
         }
-    } else if ([destinationType isSubclassOfClass:[NSString class]] && [value respondsToSelector:@selector(stringValue)]) {
+        else if ([destinationType isSubclassOfClass:[NSDate class]]) {
+            return [NSDate dateWithTimeIntervalSince1970:[(NSNumber*)value intValue]];
+        }
+    } else if ([destinationType isSubclassOfClass:[NSString class]]
+               && [value respondsToSelector:@selector(stringValue)]) {
         return [value stringValue];
-    } else if ([destinationType isSubclassOfClass:[NSString class]] && [value isKindOfClass:[NSDate class]]) {
+    } else if ([destinationType isSubclassOfClass:[NSString class]]
+               && [value isKindOfClass:[NSDate class]]) {
         // NSDate -> NSString
         // Transform using the preferred date formatter
         NSString* dateString = nil;
@@ -221,7 +223,19 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
 }
 
 - (BOOL)shouldSetValue:(id)value atKeyPath:(NSString*)keyPath {
-    id currentValue = [self.destinationObject valueForKeyPath:keyPath];
+    id currentValue = nil;
+
+    if (self.destinationObject &&
+        ![self.destinationObject isEqual:[NSNull null]])
+    {
+        @try {
+            currentValue = [self.destinationObject valueForKeyPath:keyPath];
+        }
+        @catch (NSException *exception) {
+            RKLogError(@"Encountered exception while attempting to set value (%@) for a key path (%@): %@", value, keyPath, exception);
+        }
+    }
+
     if (currentValue == [NSNull null] || [currentValue isEqual:[NSNull null]]) {
         currentValue = nil;
     }
@@ -229,14 +243,21 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
 	if (nil == currentValue && nil == value) {
 		// Both are nil
         return NO;
-	} else if (nil == value || nil == currentValue) {
-		// One is nil and the other is not
-        return [self validateValue:value atKeyPath:keyPath];
 	}
 
-    if (! [self isValue:value equalToValue:currentValue]) {
-        // Validate value for key
-        return [self validateValue:value atKeyPath:keyPath];
+    @try {
+        if (nil == value || nil == currentValue) {
+            // One is nil and the other is not
+            return [self validateValue:value atKeyPath:keyPath];
+        }
+
+        if (! [self isValue:value equalToValue:currentValue]) {
+            // Validate value for key
+            return [self validateValue:value atKeyPath:keyPath];
+        }
+    }
+    @catch (NSException *exception) {
+        RKLogError(@"Encountered exception while attempting to validate value (%@) at key path (%@): %@", value, keyPath, exception);
     }
     return NO;
 }

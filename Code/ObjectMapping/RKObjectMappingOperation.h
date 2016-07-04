@@ -83,7 +83,7 @@
  Create a new mapping operation configured to transform the object representation
  in a source object to a new destination object according to an object mapping definition
  */
-+ (RKObjectMappingOperation*)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(id<RKObjectMappingDefinition>)mapping;
++ (instancetype)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(id<RKObjectMappingDefinition>)mapping;
 
 /**
  Initialize a mapping operation for an object and set of data at a particular key path with an object mapping definition

@@ -26,10 +26,7 @@
 #import "RKRequestQueue.h"
 #import "RKResponse.h"
 #import "RKNotifications.h"
-#import "../Support/RKLog.h"
-#import "../Support/RKFixCategoryBug.h"
-
-RK_FIX_CATEGORY_BUG(UIApplication_RKNetworkActivity)
+#import "RKLog.h"
 
 // Constants
 static NSMutableArray* RKRequestQueueInstances = nil;
@@ -129,7 +126,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
         _showsNetworkActivityIndicatorWhenBusy = NO;
 
 #if TARGET_OS_IPHONE
-        BOOL backgroundOK = &UIApplicationDidEnterBackgroundNotification != NULL;
+        BOOL backgroundOK = (&UIApplicationDidEnterBackgroundNotification) != NULL;
         if (backgroundOK) {
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(willTransitionToBackground)
@@ -179,7 +176,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
 - (NSString*)description {
     return [NSString stringWithFormat:@"<%@: %p name=%@ suspended=%@ requestCount=%d loadingCount=%d/%d>", 
             NSStringFromClass([self class]), self, self.name, self.suspended ? @"YES" : @"NO", 
-            self.count, self.loadingCount, self.concurrentRequestsLimit];
+            (int)self.count, (int)self.loadingCount, (int)self.concurrentRequestsLimit];
 }
 
 - (NSUInteger)loadingCount {
@@ -204,7 +201,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
     @synchronized(self) {
         [_loadingRequests addObject:request];
     }
-    RKLogTrace(@"Loading count now %d for queue %@", self.loadingCount, self);
+    RKLogTrace(@"Loading count now %d for queue %@", (int)self.loadingCount, self);
 }
 
 - (void)removeLoadingRequest:(RKRequest*)request {
@@ -225,7 +222,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
     @synchronized(self) {
         [_loadingRequests removeObject:request];
     }
-    RKLogTrace(@"Loading count now %d for queue %@", self.loadingCount, self);
+    RKLogTrace(@"Loading count now %d for queue %@", (int)self.loadingCount, self);
 }
 
 - (void)loadNextInQueueDelayed {
@@ -280,7 +277,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
 
             [self addLoadingRequest:request];
             [request sendAsynchronously];            
-            RKLogDebug(@"Sent request %@ from queue %@. Loading count = %d of %d", request, self, self.loadingCount, _concurrentRequestsLimit);
+            RKLogDebug(@"Sent request %@ from queue %@. Loading count = %d of %d", request, self, (int)self.loadingCount, (int)_concurrentRequestsLimit);
 
             if ([_delegate respondsToSelector:@selector(requestQueue:didSendRequest:)]) {
                 [_delegate requestQueue:self didSendRequest:request];
@@ -444,7 +441,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
     NSDictionary* userInfo = [notification userInfo];
         
     // We successfully loaded a response
-    RKLogDebug(@"Received response for request %@, removing from queue. (Now loading %d of %d)", request, self.loadingCount, _concurrentRequestsLimit);
+    RKLogDebug(@"Received response for request %@, removing from queue. (Now loading %d of %d)", request, (int)self.loadingCount, (int)_concurrentRequestsLimit);
     
     RKResponse* response = [userInfo objectForKey:RKRequestDidLoadResponseNotificationUserInfoResponseKey];
     if ([_delegate respondsToSelector:@selector(requestQueue:didLoadResponse:)]) {
@@ -467,7 +464,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
     if (userInfo) {
         error = [userInfo objectForKey:RKRequestDidFailWithErrorNotificationUserInfoErrorKey];
         RKLogDebug(@"Request %@ failed loading in queue %@ with error: %@.(Now loading %d of %d)", request, self,
-                   [error localizedDescription], self.loadingCount, _concurrentRequestsLimit);
+                   [error localizedDescription], (int)self.loadingCount, (int)_concurrentRequestsLimit);
     } else {
         RKLogWarning(@"Received RKRequestDidFailWithErrorNotification without a userInfo, something is amiss...");
     }
@@ -516,7 +513,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
 
         if ([notification.name isEqualToString:RKRequestDidLoadResponseNotification]) {
             // We successfully loaded a response
-            RKLogDebug(@"Received response for request %@, removing from queue. (Now loading %d of %d)", request, self.loadingCount, _concurrentRequestsLimit);
+            RKLogDebug(@"Received response for request %@, removing from queue. (Now loading %d of %d)", request, (int)self.loadingCount, (int)_concurrentRequestsLimit);
 
             RKResponse* response = [userInfo objectForKey:RKRequestDidLoadResponseNotificationUserInfoResponseKey];
             if ([_delegate respondsToSelector:@selector(requestQueue:didLoadResponse:)]) {
@@ -528,7 +525,7 @@ static const NSTimeInterval kFlushDelay = 0.3;
             if (userInfo) {
                 error = [userInfo objectForKey:RKRequestDidFailWithErrorNotificationUserInfoErrorKey];
                 RKLogDebug(@"Request %@ failed loading in queue %@ with error: %@.(Now loading %d of %d)", request, self,
-                           [error localizedDescription], self.loadingCount, _concurrentRequestsLimit);
+                           [error localizedDescription], (int)self.loadingCount, (int)_concurrentRequestsLimit);
             } else {
                 RKLogWarning(@"Received RKRequestDidFailWithErrorNotification without a userInfo, something is amiss...");
             }

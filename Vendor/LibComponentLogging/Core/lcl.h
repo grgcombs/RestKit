@@ -28,7 +28,7 @@
 
 #define _LCL_VERSION_MAJOR  1
 #define _LCL_VERSION_MINOR  1
-#define _LCL_VERSION_BUILD  4
+#define _LCL_VERSION_BUILD  6
 #define _LCL_VERSION_SUFFIX ""
 
 //
@@ -125,15 +125,38 @@ typedef uint8_t  _lcl_level_narrow_t;
 // Log components.
 //
 
+//#define _lcl_component(_identifier, _header, _name) lcl_c##_identifier, \
+//                                                    __lcl_log_symbol_lcl_c##_identifier = lcl_c##_identifier,
+
+    
+//#undef _lcl_component
 
 // Log components, prefixed with 'lcl_c'.
 enum {
-#   define  _lcl_component(_identifier, _header, _name)                        \
-    lcl_c##_identifier,                                                        \
-  __lcl_log_symbol_lcl_c##_identifier = lcl_c##_identifier,
-#   include "lcl_config_components.h"
-#   undef   _lcl_component
-
+    lcl_cRestKit,
+    __lcl_log_symbol_lcl_cRestKit = lcl_cRestKit,
+    lcl_cRestKitNetwork,
+    __lcl_log_symbol_lcl_cRestKitNetwork = lcl_cRestKitNetwork,
+    lcl_cRestKitNetworkCache,
+    __lcl_log_symbol_lcl_cRestKitNetworkCache = lcl_cRestKitNetworkCache,
+    lcl_cRestKitNetworkQueue,
+    __lcl_log_symbol_lcl_cRestKitNetworkQueue = lcl_cRestKitNetworkQueue,
+    lcl_cRestKitNetworkReachability,
+    __lcl_log_symbol_lcl_cRestKitNetworkReachability = lcl_cRestKitNetworkReachability,
+    lcl_cRestKitObjectMapping,
+    __lcl_log_symbol_lcl_cRestKitObjectMapping = lcl_cRestKitObjectMapping,
+    lcl_cRestKitCoreData,
+    __lcl_log_symbol_lcl_cRestKitCoreData = lcl_cRestKitCoreData,
+    lcl_cRestKitCoreDataSearchEngine,
+    __lcl_log_symbol_lcl_cRestKitCoreDataSearchEngine = lcl_cRestKitCoreDataSearchEngine,
+    lcl_cRestKitSupport,
+    __lcl_log_symbol_lcl_cRestKitSupport = lcl_cRestKitSupport,
+    lcl_cRestKitSupportParsers,
+    __lcl_log_symbol_lcl_cRestKitSupportParsers = lcl_cRestKitSupportParsers,
+    lcl_cRestKitUI,
+    __lcl_log_symbol_lcl_cRestKitUI = lcl_cRestKitUI,
+    lcl_cApp,
+    __lcl_log_symbol_lcl_cApp = lcl_cApp,
    _lcl_component_t_count,
    _lcl_component_t_first = 0,
    _lcl_component_t_last  = _lcl_component_t_count-1
@@ -141,8 +164,21 @@ enum {
 
 // Log component type.
 typedef uint32_t _lcl_component_t;
-
-
+/*
+    _lcl_component(RestKit, "restkit", "RestKit")
+    _lcl_component(RestKitNetwork, "restkit.network", "RestKit/Network")
+    _lcl_component(RestKitNetworkCache, "restkit.network.cache", "RestKit/Network/Cache")
+    _lcl_component(RestKitNetworkQueue, "restkit.network.queue", "RestKit/Network/Queue")
+    _lcl_component(RestKitNetworkReachability, "restkit.network.reachability", "RestKit/Network/Reachability")
+    _lcl_component(RestKitObjectMapping, "restkit.object_mapping", "RestKit/ObjectMapping")
+    _lcl_component(RestKitCoreData, "restkit.core_data", "RestKit/CoreData")
+    _lcl_component(RestKitCoreDataSearchEngine, "restkit.core_data.search_engine", "RestKit/CoreData/SearchEngine")
+    _lcl_component(RestKitSupport, "restkit.support", "RestKit/Support")
+    _lcl_component(RestKitSupportParsers, "restkit.support.parsers", "RestKit/Support/Parsers")
+    _lcl_component(RestKitThree20, "restkit.three20", "RestKit/Three20")
+    _lcl_component(RestKitUI, "restkit.ui", "RestKit/UI")
+    _lcl_component(App, "app", "App")
+*/
 //
 // Functions and macros.
 //
@@ -162,11 +198,11 @@ typedef uint32_t _lcl_component_t;
 // logging back-end. _lcl_logger has the same signature as lcl_log.
 //
 #ifdef _LCL_NO_LOGGING
-#   define lcl_log(_component, _level, _format, ...)                           \
+# define lcl_log(_component, _level, _format, ...)                           \
         do {                                                                   \
         } while (false)
 #else
-#   define lcl_log(_component, _level, _format, ...)                           \
+#define lcl_log(_component, _level, _format, ...)                           \
         do {                                                                   \
             if ((_lcl_component_level[(__lcl_log_symbol(_component))]) >=      \
                 (__lcl_log_symbol(_level))) {                                  \

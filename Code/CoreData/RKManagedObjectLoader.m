@@ -24,9 +24,9 @@
 #import "RKObjectMapper.h"
 #import "RKManagedObjectThreadSafeInvocation.h"
 #import "NSManagedObject+ActiveRecord.h"
-#import "../ObjectMapping/RKObjectLoader_Internals.h"
-#import "../Network/RKRequest_Internals.h"
-#import "../Support/RKLog.h"
+#import "RKObjectLoader_Internals.h"
+#import "RKRequest_Internals.h"
+#import "RKLog.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -130,7 +130,7 @@
 
 // NOTE: We are on the background thread here, be mindful of Core Data's threading needs
 - (void)processMappingResult:(RKObjectMappingResult*)result {
-    NSAssert(![NSThread isMainThread], @"Mapping result processing should occur on a background thread");
+    NSAssert(![NSThread isMainThread] || _sentSynchronously, @"Mapping result processing should occur on a background thread");
     if (_targetObjectID && self.targetObject && self.method == RKRequestMethodDELETE) {
         NSManagedObject* backgroundThreadObject = [self.objectStore objectWithID:_targetObjectID];
         RKLogInfo(@"Deleting local object %@ due to DELETE request", backgroundThreadObject);

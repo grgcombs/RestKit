@@ -18,8 +18,11 @@
 //  limitations under the License.
 //
 
-#import "../ObjectMapping/RKObjectLoader.h"
-#import "RKManagedObjectStore.h"
+#ifndef RKManagedObjectLoader_h
+#define RKManagedObjectLoader_h "RKManagedObjectLoader.h"
+
+#import <SLFRestKit/RKObjectLoader.h>
+#import <SLFRestKit/RKManagedObjectStore.h>
 
 /**
  A subclass of the object loader that is dispatched when you
@@ -36,3 +39,5 @@
 @property (nonatomic, readonly) RKManagedObjectStore* objectStore;
 
 @end
+
+#endif

@@ -21,7 +21,7 @@
 #import "RKManagedObjectMappingOperation.h"
 #import "RKManagedObjectMapping.h"
 #import "NSManagedObject+ActiveRecord.h"
-#import "../Support/RKLog.h"
+#import "RKLog.h"
 #import "RKDynamicObjectMappingMatcher.h"
 #import "RKLog.h"
 
@@ -43,8 +43,10 @@
  Trampoline the initialization through RKManagedObjectMapping so the mapper uses RKManagedObjectMappingOperation
  at the right moments
  */
-+ (RKObjectMappingOperation*)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(RKObjectMapping*)objectMapping {
-    if ([objectMapping isKindOfClass:[RKManagedObjectMapping class]]) {
++ (instancetype)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(RKObjectMapping*)objectMapping
+{
+    if ([objectMapping isKindOfClass:[RKManagedObjectMapping class]])
+    {
         return [[[RKManagedObjectMappingOperation alloc] initWithSourceObject:sourceObject destinationObject:destinationObject mapping:objectMapping] autorelease];
     }
         
@@ -87,7 +89,7 @@
     
     RKObjectRelationshipMapping* relationshipMapping = [self.objectMapping mappingForRelationship:relationshipName];
     id<RKObjectMappingDefinition> mapping = relationshipMapping.mapping;
-    NSAssert(mapping, @"Attempted to connect relationship for keyPath '%@' without a relationship mapping defined.");
+    NSAssert(mapping, @"Attempted to connect relationship for keyPath '%@' without a relationship mapping defined.", relationshipName);
     if (! [mapping isKindOfClass:[RKObjectMapping class]]) {
         RKLogWarning(@"Can only connect relationships for RKObjectMapping relationships. Found %@: Skipping...", NSStringFromClass([mapping class]));
         return;

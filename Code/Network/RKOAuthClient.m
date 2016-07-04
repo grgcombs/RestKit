@@ -19,7 +19,7 @@
 //
 
 #import "RKOAuthClient.h"
-#import "../Support/RKError.h"
+#import "RKError.h"
 
 @implementation RKOAuthClient
 
@@ -63,7 +63,8 @@
 - (void)validateAuthorizationCode {
     NSString *httpBody = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&code=%@&redirect_uri=%@&grant_type=authorization_code",
                           _clientID, _clientSecret, _authorizationCode, _callbackURL];
-    RKClient *requestClient = [RKClient clientWithBaseURL:_authorizationURL];
+    NSURL *url = [[NSURL alloc] initWithString:_authorizationURL];
+    RKClient *requestClient = [RKClient clientWithBaseURL:url];
     RKRequest *theRequest = [requestClient requestWithResourcePath:@"" delegate:self];
     [theRequest setHTTPBodyString:httpBody];
     [theRequest setMethod:RKRequestMethodPOST];
@@ -92,7 +93,7 @@
             // Heads-up! There is an error in the response
             // The possible errors are defined in the OAuth2 Protocol
             
-            RKOAuthClientErrorCode errorCode;
+            RKOAuthClientErrorCode errorCode = 0;
             NSString *errorDescription = [oauthResponse objectForKey:@"error_description"];
             
             if ([errorResponse isEqualToString:@"invalid_grant"]) {

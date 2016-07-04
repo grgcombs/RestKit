@@ -18,6 +18,9 @@
 //  limitations under the License.
 //
 
+#ifndef RKClient_h
+#define RKClient_h "RKClient.h"
+
 #import "RKRequest.h"
 #import "RKParams.h"
 #import "RKResponse.h"
@@ -182,7 +185,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
  @see RKRequestSerializable
  */
 @interface RKClient : NSObject {
-	NSString *_baseURL;
+	NSURL *_baseURL;
     RKRequestAuthenticationType _authenticationType;
 	NSString *_username;
 	NSString *_password;
@@ -221,7 +224,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
  
  @see requestCache
  */
-@property (nonatomic, retain) NSString *baseURL;
+@property (nonatomic, retain) NSURL *baseURL;
 
 /**
  A dictionary of headers to be sent with each request
@@ -501,7 +504,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
  @see baseURL
  @return A configured RKClient instance ready to send requests
  */
-+ (RKClient *)clientWithBaseURL:(NSString *)baseURL;
++ (instancetype)clientWithBaseURL:(NSURL *)baseURL;
 
 /**
  Return a Rest client scoped to a particular base URL with a set of HTTP AUTH credentials. 
@@ -512,7 +515,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
  @param password The password to use for HTTP Authentication challenges
  @return A configured RKClient instance ready to send requests
  */
-+ (RKClient *)clientWithBaseURL:(NSString *)baseURL username:(NSString *)username password:(NSString *)password;
++ (instancetype)clientWithBaseURL:(NSURL *)baseURL username:(NSString *)username password:(NSString *)password;
 
 /**
  Return a client scoped to a particular base URL. If the singleton client is nil, the return client is set as the singleton
@@ -521,7 +524,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
  @see baseURL
  @return A configured RKClient instance ready to send requests
  */
-- (id)initWithBaseURL:(NSString *)baseURL;
+- (instancetype)initWithBaseURL:(NSURL *)baseURL;
 
 /////////////////////////////////////////////////////////////////////////
 /// @name Constructing Resource Paths and URLs
@@ -710,3 +713,5 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 - (RKRequest *)delete:(NSString *)resourcePath usingBlock:(void (^)(RKRequest *request))block;
 
 @end
+
+#endif

@@ -20,9 +20,6 @@
 
 #import <CommonCrypto/CommonDigest.h>
 #import "NSData+MD5.h"
-#import "../Support/RKFixCategoryBug.h"
-
-RK_FIX_CATEGORY_BUG(NSData_MD5)
 
 @implementation NSData (MD5)
 
@@ -31,7 +28,7 @@ RK_FIX_CATEGORY_BUG(NSData_MD5)
 	unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
 
 	// Create 16 byte MD5 hash value, store in buffer
-	CC_MD5(self.bytes, self.length, md5Buffer);
+	CC_MD5(self.bytes, (CC_LONG)self.length, md5Buffer);
 
 	// Convert unsigned char buffer to NSString of hex values
 	NSMutableString* output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];

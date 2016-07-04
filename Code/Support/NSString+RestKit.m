@@ -23,13 +23,11 @@
 #else
 #import <CoreServices/CoreServices.h>
 #endif
+
 #import "NSString+RestKit.h"
-#import "../Network/RKClient.h"
-#import "RKFixCategoryBug.h"
+#import "RKClient.h"
 #include <netdb.h>
 #include <arpa/inet.h>
-
-RK_FIX_CATEGORY_BUG(NSString_RestKit)
 
 @implementation NSString (RestKit)
 

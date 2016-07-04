@@ -20,7 +20,7 @@
 
 #import "RKRequest.h"
 #import "RKResponse.h"
-#import "../Support/RKCache.h"
+#import "RKCache.h"
 
 /**
  * Storage policy. Determines if we clear the cache out when the app is shut down.

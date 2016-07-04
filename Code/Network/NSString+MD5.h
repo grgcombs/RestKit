@@ -18,6 +18,7 @@
 //  limitations under the License.
 //
 
+#import <Foundation/Foundation.h>
 
 @interface NSString (MD5)
 

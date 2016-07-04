@@ -19,7 +19,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "../Support/RKMutableBlockDictionary.h"
+#import <SLFRestKit/RKMutableBlockDictionary.h>
 
 @class RKTableViewCellMapping;
 

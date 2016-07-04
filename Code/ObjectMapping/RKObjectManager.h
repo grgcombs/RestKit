@@ -18,7 +18,10 @@
 //  limitations under the License.
 //
 
-#import "../Network/Network.h"
+#ifndef RKObjectManager_h
+#define RKObjectManager_h "RKObjectManager.h"
+
+#import "Network.h"
 #import "RKObjectLoader.h"
 #import "RKObjectRouter.h"
 #import "RKObjectMappingProvider.h"
@@ -156,12 +159,12 @@ typedef enum {
  Create and initialize a new object manager. If this is the first instance created
  it will be set as the shared instance
  */
-+ (RKObjectManager*)objectManagerWithBaseURL:(NSString*)baseURL;
++ (instancetype)objectManagerWithBaseURL:(NSURL *)baseURL;
 
 /**
  Initialize a new model manager instance
  */
-- (id)initWithBaseURL:(NSString*)baseURL;
+- (instancetype)initWithBaseURL:(NSURL *)baseURL;
 
 /// @name Network Integration
 
@@ -420,3 +423,5 @@ typedef enum {
 - (RKObjectLoader *)objectLoaderForObject:(id<NSObject>)object method:(RKRequestMethod)method delegate:(id<RKObjectLoaderDelegate>)delegate;
 
 @end
+
+#endif

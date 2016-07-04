@@ -18,6 +18,7 @@
 //  limitations under the License.
 //
 
+#import <Foundation/Foundation.h>
 
 @interface NSData (MD5)
 

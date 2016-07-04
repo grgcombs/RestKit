@@ -24,7 +24,7 @@
 
 #import "RKManagedObjectSeeder.h"
 #import "RKManagedObjectStore.h"
-#import "../ObjectMapping/RKParserRegistry.h"
+#import "RKParserRegistry.h"
 #import "RKLog.h"
 
 // Set Logging Component
@@ -156,7 +156,7 @@ NSString* const RKDefaultSeedDatabaseFileName = @"RKSeedDatabase.sqlite";
             }
         }
         
-		RKLogInfo(@"Seeded %d objects from %@...", [mappedObjects count], [NSString stringWithFormat:@"%@", fileName]);
+		RKLogInfo(@"Seeded %d objects from %@...", (int)[mappedObjects count], [NSString stringWithFormat:@"%@", fileName]);
 	} else {
 		RKLogError(@"Unable to read file %@: %@", fileName, [error localizedDescription]);
 	}

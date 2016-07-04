@@ -21,10 +21,10 @@
 #import "RKClient.h"
 #import "RKURL.h"
 #import "RKNotifications.h"
-#import "../Support/RKAlert.h"
-#import "../Support/RKLog.h"
-#import "../Support/RKPathMatcher.h"
-#import "../Support/NSString+RestKit.h"
+#import "RKAlert.h"
+#import "RKLog.h"
+#import "RKPathMatcher.h"
+#import "NSString+RestKit.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -101,12 +101,12 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 	sharedClient = [client retain];
 }
 
-+ (RKClient *)clientWithBaseURL:(NSString *)baseURL {
++ (instancetype)clientWithBaseURL:(NSURL *)baseURL {
 	RKClient *client = [[[self alloc] initWithBaseURL:baseURL] autorelease];
 	return client;
 }
 
-+ (RKClient *)clientWithBaseURL:(NSString *)baseURL username:(NSString *)username password:(NSString *)password {
++ (instancetype)clientWithBaseURL:(NSURL *)baseURL username:(NSString *)username password:(NSString *)password {
 	RKClient *client = [RKClient clientWithBaseURL:baseURL];
     client.authenticationType = RKRequestAuthenticationTypeHTTPBasic;
 	client.username = username;
@@ -138,7 +138,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 	return self;
 }
 
-- (id)initWithBaseURL:(NSString *)baseURL {
+- (instancetype)initWithBaseURL:(NSURL *)baseURL {
     self = [self init];
     if (self) {        
         self.cachePolicy = RKRequestCachePolicyDefault;
@@ -180,7 +180,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 
 - (NSString *)cachePath {
     NSString *cacheDirForClient = [NSString stringWithFormat:@"RKClientRequestCache-%@",
-                                   [[NSURL URLWithString:self.baseURL] host]];
+                                   [self.baseURL host]];
     NSString *cachePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0]
                            stringByAppendingPathComponent:cacheDirForClient];
     return cachePath;
@@ -200,7 +200,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 }
 
 - (NSURL *)URLForResourcePath:(NSString *)resourcePath {
-	return [RKURL URLWithBaseURLString:self.baseURL resourcePath:resourcePath];
+	return [RKURL URLWithBaseURLString:self.baseURL.absoluteString resourcePath:resourcePath];
 }
 
 - (NSString *)URLPathForResourcePath:(NSString *)resourcePath {
@@ -208,7 +208,7 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 }
 
 - (NSURL *)URLForResourcePath:(NSString *)resourcePath queryParams:(NSDictionary *)queryParams {
-	return [RKURL URLWithBaseURLString:self.baseURL resourcePath:resourcePath queryParams:queryParams];
+	return [RKURL URLWithBaseURLString:self.baseURL.absoluteString resourcePath:resourcePath queryParams:queryParams];
 }
 
 - (void)setupRequest:(RKRequest *)request {
@@ -277,10 +277,10 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 }
 
 - (void)baseURLDidChange:(NSDictionary *)change {
-    NSString *newBaseURLString = [change objectForKey:NSKeyValueChangeNewKey];
+    NSURL *newBaseURL = [change objectForKey:NSKeyValueChangeNewKey];
     
     // Don't crash if baseURL is nil'd out (i.e. dealloc)
-    if (! [newBaseURLString isEqual:[NSNull null]]) {
+    if (! [newBaseURL isEqual:[NSNull null]]) {
         // Configure a cache for the new base URL
         [_requestCache release];
         _requestCache = [[RKRequestCache alloc] initWithCachePath:[self cachePath]
@@ -288,9 +288,8 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
     
         // Determine reachability strategy (if user has not already done so)
         if (self.reachabilityObserver == nil) {
-            NSURL *newBaseURL = [NSURL URLWithString:newBaseURLString];
             NSString *hostName = [newBaseURL host];
-            if ([newBaseURLString isEqualToString:@"localhost"] || [hostName isIPAddress]) {
+            if ([hostName isEqualToString:@"localhost"] || [hostName isIPAddress]) {
                 self.reachabilityObserver = [RKReachabilityObserver reachabilityObserverForHost:hostName];
             } else {
                 self.reachabilityObserver = [RKReachabilityObserver reachabilityObserverForInternet];

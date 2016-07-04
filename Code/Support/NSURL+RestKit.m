@@ -20,10 +20,7 @@
 
 #import "NSURL+RestKit.h"
 #import "NSDictionary+RKAdditions.h"
-#import "RKFixCategoryBug.h"
 #import "NSString+RestKit.h"
-
-RK_FIX_CATEGORY_BUG(NSURL_RestKit)
 
 @implementation NSURL (RestKit)
 

@@ -21,23 +21,13 @@
 #import "RKObjectMapping.h"
 #import "RKObjectRelationshipMapping.h"
 #import "RKObjectPropertyInspector.h"
-#import "../Support/RKLog.h"
+#import "RKLog.h"
 
 // Constants
 NSString* const RKObjectMappingNestingAttributeKeyName = @"<RK_NESTING_ATTRIBUTE>";
 
 @implementation RKObjectMapping
 
-@synthesize objectClass = _objectClass;
-@synthesize mappings = _mappings;
-@synthesize dateFormatters = _dateFormatters;
-@synthesize preferredDateFormatter = _preferredDateFormatter;
-@synthesize rootKeyPath = _rootKeyPath;
-@synthesize setDefaultValueForMissingAttributes = _setDefaultValueForMissingAttributes;
-@synthesize setNilForMissingRelationships = _setNilForMissingRelationships;
-@synthesize forceCollectionMapping = _forceCollectionMapping;
-@synthesize performKeyValueValidation = _performKeyValueValidation;
-@synthesize ignoreUnknownKeyPaths = _ignoreUnknownKeyPaths;
 + (id)mappingForClass:(Class)objectClass {
     RKObjectMapping* mapping = [self new];
     mapping.objectClass = objectClass;

@@ -22,9 +22,6 @@
 //
 
 #import "NSData+Base64.h"
-#import "RKFixCategoryBug.h"
-
-RK_FIX_CATEGORY_BUG(NSData_Base64)
 
 //
 // Mapping from 6 bit pattern to ASCII character.
@@ -299,7 +296,7 @@ char *NewBase64Encode(
 //
 - (NSString *)base64EncodedString
 {
-	size_t outputLength;
+	size_t outputLength = 0;
 	char *outputBuffer =
 		NewBase64Encode([self bytes], [self length], true, &outputLength);
 	

@@ -18,11 +18,18 @@
 //  limitations under the License.
 //
 
-#import "RKObjectManager.h"
-#import "RKObjectLoader.h"
-#import "RKObjectMapping.h"
-#import "RKObjectSerializer.h"
-#import "RKObjectMappingProvider.h"
-#import "RKObjectMappingResult.h"
-#import "RKObjectMapper.h"
-#import "RKParserRegistry.h"
+#ifndef RK_ObjectMapping_h
+#define RK_ObjectMapping_h "ObjectMapping.h"
+
+#import <SLFRestKit/RKObjectManager.h>
+#import <SLFRestKit/RKObjectLoader.h>
+#import <SLFRestKit/RKObjectMapping.h>
+#import <SLFRestKit/RKObjectSerializer.h>
+#import <SLFRestKit/RKObjectMappingProvider.h>
+#import <SLFRestKit/RKObjectMappingResult.h>
+#import <SLFRestKit/RKObjectMapper.h>
+#import <SLFRestKit/RKParserRegistry.h>
+#import <SLFRestKit/SOCKit.h>
+#import <SLFRestKit/RKErrorMessage.h>
+
+#endif

@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "../Support/RKSearchEngine.h"
+#import <SLFRestKit/RKSearchEngine.h>
 
 @interface RKManagedObjectSearchEngine : NSObject {
 	RKSearchMode _mode;

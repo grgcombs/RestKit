@@ -20,12 +20,12 @@
 
 #ifdef TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#import "RKTableSection.h"
-#import "RKTableViewCellMappings.h"
-#import "RKTableItem.h"
-#import "../ObjectMapping/RKObjectManager.h"
-#import "../ObjectMapping/RKObjectMapping.h"
-#import "../ObjectMapping/RKObjectLoader.h"
+#import <SLFRestKit/RKTableSection.h>
+#import <SLFRestKit/RKTableViewCellMappings.h>
+#import <SLFRestKit/RKTableItem.h>
+#import <SLFRestKit/RKObjectManager.h>
+#import <SLFRestKit/RKObjectMapping.h>
+#import <SLFRestKit/RKObjectLoader.h>
 
 /** @name Constants */
 
@@ -105,10 +105,17 @@ extern NSString* const RKTableControllerDidBecomeOffline;
 /////////////////////////////////////////////////////////////////////////
 
 @property (nonatomic, retain) RKTableViewCellMappings* cellMappings;
+@property (nonatomic, assign) BOOL hasRegisteredCells;
 
 - (void)mapObjectsWithClass:(Class)objectClass toTableCellsWithMapping:(RKTableViewCellMapping*)cellMapping;
 - (id)objectForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (RKTableViewCellMapping*)cellMappingForObjectAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Return the index path of the object within the table
+ */
+- (NSIndexPath *)indexPathForObject:(id)object;
+- (UITableViewCell *)cellForObject:(id)object;
 
 /////////////////////////////////////////////////////////////////////////
 /// @name Header and Footer Rows
@@ -264,6 +271,8 @@ extern NSString* const RKTableControllerDidBecomeOffline;
 @protocol RKTableControllerDelegate <NSObject>
 
 @optional
+
+- (void)willDisplayInTableViewCell:(UITableViewCell *)cell;
 
 // Network
 - (void)tableController:(RKAbstractTableController *)tableController willLoadTableWithObjectLoader:(RKObjectLoader*)objectLoader;

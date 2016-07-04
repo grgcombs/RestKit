@@ -20,14 +20,14 @@
 
 #ifdef TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#import "RKAbstractTableController.h"
-#import "RKTableSection.h"
-#import "RKTableViewCellMappings.h"
-#import "RKTableItem.h"
-#import "RKForm.h"
-#import "../ObjectMapping/RKObjectManager.h"
-#import "../ObjectMapping/RKObjectMapping.h"
-#import "../ObjectMapping/RKObjectLoader.h"
+#import <SLFRestKit/RKAbstractTableController.h>
+#import <SLFRestKit/RKTableSection.h>
+#import <SLFRestKit/RKTableViewCellMappings.h>
+#import <SLFRestKit/RKTableItem.h>
+#import <SLFRestKit/RKForm.h>
+#import <SLFRestKit/RKObjectManager.h>
+#import <SLFRestKit/RKObjectMapping.h>
+#import <SLFRestKit/RKObjectLoader.h>
 
 @interface RKTableController : RKAbstractTableController
 
@@ -38,20 +38,6 @@
 - (void)loadObjects:(NSArray *)objects;
 - (void)loadObjects:(NSArray *)objects inSection:(NSUInteger)sectionIndex;
 - (void)loadEmpty;
-
-/**
- Return the index path of the object within the table
- */
-// TODO: Move to superclass???
-- (NSIndexPath *)indexPathForObject:(id)object;
-
-/**
- */
-// TODO: Move to superclass???
-- (id)objectAtIndexPath:(NSIndexPath *)indexPath;
-
-// TODO: Move to superclass???
-- (UITableViewCell *)cellForObject:(id)object;
 
 // Move to superclass???
 - (void)reloadRowForObject:(id)object withRowAnimation:(UITableViewRowAnimation)rowAnimation;

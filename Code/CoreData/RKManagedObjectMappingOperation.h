@@ -18,13 +18,11 @@
 //  limitations under the License.
 //
 
-#import "../ObjectMapping/RKObjectMappingOperation.h"
+#import <SLFRestKit/RKObjectMappingOperation.h>
 
 /**
  Enhances the object mapping operation process with Core Data specific logic
  */
-@interface RKManagedObjectMappingOperation : RKObjectMappingOperation {
-    
-}
+@interface RKManagedObjectMappingOperation : RKObjectMappingOperation
 
 @end
