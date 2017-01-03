@@ -24,27 +24,27 @@ static NSNumber *defaultBatchSize = nil;
 
 #pragma mark - RKManagedObject methods
 
-+ (NSManagedObjectContext*)managedObjectContext {
++ (NSManagedObjectContext*)arManagedObjectContext {
     NSAssert([RKObjectManager sharedManager], @"[RKObjectManager sharedManager] cannot be nil");
     NSAssert([RKObjectManager sharedManager].objectStore, @"[RKObjectManager sharedManager].objectStore cannot be nil");
 	return [[[RKObjectManager sharedManager] objectStore] managedObjectContext];
 }
 
-+ (NSEntityDescription*)entity {
++ (NSEntityDescription*)arEntity {
 	NSString* className = [NSString stringWithCString:class_getName([self class]) encoding:NSASCIIStringEncoding];
-	return [NSEntityDescription entityForName:className inManagedObjectContext:[self managedObjectContext]];
+	return [NSEntityDescription entityForName:className inManagedObjectContext:[self arManagedObjectContext]];
 }
 
-+ (NSFetchRequest*)fetchRequest {
++ (NSFetchRequest*)arFetchRequest {
 	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-	NSEntityDescription *entity = [self entity];
+	NSEntityDescription *entity = [self arEntity];
 	[fetchRequest setEntity:entity];
 	return fetchRequest;
 }
 
 + (NSArray*)objectsWithFetchRequest:(NSFetchRequest*)fetchRequest {
 	NSError* error = nil;
-	NSArray* objects = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+	NSArray* objects = [[self arManagedObjectContext] executeFetchRequest:fetchRequest error:&error];
 	if (objects == nil) {
 		RKLogError(@"Error: %@", [error localizedDescription]);
 	}
@@ -53,7 +53,7 @@ static NSNumber *defaultBatchSize = nil;
 
 + (NSUInteger)countOfObjectsWithFetchRequest:(NSFetchRequest*)fetchRequest {
 	NSError* error = nil;
-	NSUInteger objectCount = [[self managedObjectContext] countForFetchRequest:fetchRequest error:&error];
+	NSUInteger objectCount = [[self arManagedObjectContext] countForFetchRequest:fetchRequest error:&error];
 	if (objectCount	== NSNotFound) {
 		RKLogError(@"Error: %@", [error localizedDescription]);
 	}
@@ -81,13 +81,13 @@ static NSNumber *defaultBatchSize = nil;
 }
 
 + (NSArray*)objectsWithPredicate:(NSPredicate*)predicate {
-	NSFetchRequest* fetchRequest = [self fetchRequest];
+	NSFetchRequest* fetchRequest = [self arFetchRequest];
 	[fetchRequest setPredicate:predicate];
 	return [self objectsWithFetchRequest:fetchRequest];
 }
 
 + (id)objectWithPredicate:(NSPredicate*)predicate {
-	NSFetchRequest* fetchRequest = [self fetchRequest];
+	NSFetchRequest* fetchRequest = [self arFetchRequest];
 	[fetchRequest setPredicate:predicate];
 	return [self objectWithFetchRequest:fetchRequest];
 }
@@ -97,8 +97,8 @@ static NSNumber *defaultBatchSize = nil;
 }
 
 + (NSUInteger)count:(NSError**)error {
-	NSFetchRequest* fetchRequest = [self fetchRequest];
-	return [[self managedObjectContext] countForFetchRequest:fetchRequest error:error];
+	NSFetchRequest* fetchRequest = [self arFetchRequest];
+	return [[self arManagedObjectContext] countForFetchRequest:fetchRequest error:error];
 }
 
 + (NSUInteger)count {
@@ -107,7 +107,7 @@ static NSNumber *defaultBatchSize = nil;
 }
 
 + (id)object {
-	id object = [[self alloc] initWithEntity:[self entity] insertIntoManagedObjectContext:[self managedObjectContext]];
+	id object = [[self alloc] initWithEntity:[self arEntity] insertIntoManagedObjectContext:[self arManagedObjectContext]];
 	return [object autorelease];
 }
 
@@ -119,7 +119,7 @@ static NSNumber *defaultBatchSize = nil;
 #pragma mark - MagicalRecord Ported Methods
 
 + (NSManagedObjectContext*)currentContext; {
-    return [self managedObjectContext];
+    return [self arManagedObjectContext];
 }
 
 + (void)setDefaultBatchSize:(NSUInteger)newBatchSize

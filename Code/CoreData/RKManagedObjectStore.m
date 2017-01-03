@@ -26,6 +26,7 @@
 #import "RKObjectPropertyInspector+CoreData.h"
 #import "RKAlert.h"
 #import "RKLog.h"
+#import "NSManagedObject+ActiveRecord.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -395,7 +396,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
 			NSString* primaryKey = [theClass performSelector:@selector(primaryKeyProperty)];
 			id primaryKeyValue = [object valueForKey:primaryKey];
             // TODO: Unit test that this is coerced into a string!!
-            NSEntityDescription *entity = [(NSManagedObject *)object entity];
+            NSEntityDescription *entity = [(NSManagedObject *)object arEntity];
             if ([self shouldCoerceAttributeToString:primaryKey forEntity:entity]) {
                 primaryKeyValue = [primaryKeyValue stringValue];
             }

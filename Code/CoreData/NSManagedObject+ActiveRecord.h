@@ -16,18 +16,18 @@
  * The Core Data managed object context from the RKObjectManager's objectStore
  * that is managing this model
  */
-+ (NSManagedObjectContext*)managedObjectContext;
++ (NSManagedObjectContext*)arManagedObjectContext;
 
 /**
  *	The NSEntityDescription for the Subclass
  *	defaults to the subclass className, may be overridden
  */
-+ (NSEntityDescription*)entity;
++ (NSEntityDescription*)arEntity;
 
 /**
  *	Returns an initialized NSFetchRequest for the entity, with no predicate
  */
-+ (NSFetchRequest*)fetchRequest;
++ (NSFetchRequest*)arFetchRequest;
 
 /**
  * Fetches all objects from the persistent store identified by the fetchRequest

@@ -57,7 +57,7 @@
             NSArray* attributeValueWords = [RKManagedObjectSearchEngine tokenizedNormalizedString:attributeValue];            
             for (NSString* word in attributeValueWords) {
                 if (word && [word length] > 0) {
-                    RKSearchWord* searchWord = (RKSearchWord*)[store findOrCreateInstanceOfEntity:[RKSearchWord entity]
+                    RKSearchWord* searchWord = (RKSearchWord*)[store findOrCreateInstanceOfEntity:[RKSearchWord arEntity]
                                                                           withPrimaryKeyAttribute:@"word"
                                                                                          andValue:word];
                     searchWord.word = word;
