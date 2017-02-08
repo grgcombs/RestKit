@@ -42,7 +42,8 @@
 }
 
 + (id)mappingForClass:(Class)objectClass inManagedObjectStore:(RKManagedObjectStore*)objectStore {
-    return [self mappingForEntityWithName:NSStringFromClass(objectClass) inManagedObjectStore:objectStore];
+    NSString *className = NSStringFromClass(objectClass);
+    return [self mappingForEntityWithName:className inManagedObjectStore:objectStore];
 }
 
 + (RKManagedObjectMapping*)mappingForEntity:(NSEntityDescription*)entity inManagedObjectStore:(RKManagedObjectStore*)objectStore {
@@ -50,6 +51,8 @@
 }
 
 + (RKManagedObjectMapping*)mappingForEntityWithName:(NSString*)entityName inManagedObjectStore:(RKManagedObjectStore*)objectStore {
+    if (!entityName)
+        return nil;
     return [self mappingForEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:objectStore.managedObjectContext]
              inManagedObjectStore:objectStore];
 }
@@ -59,7 +62,10 @@
     NSAssert(objectStore, @"Object store cannot be nil");
     self = [self init];
     if (self) {
-        self.objectClass = NSClassFromString([entity managedObjectClassName]);
+        NSString *className = [entity managedObjectClassName];
+        Class entityClass = (className != nil) ? NSClassFromString(className) : nil;
+        NSAssert(className != nil && entityClass != nil, @"Must have an entity class to create a mapping: %@", entity);
+        self.objectClass = entityClass;
         _entity = [entity retain];
         _objectStore = objectStore;
     }
@@ -78,7 +84,11 @@
 
 - (void)dealloc {
     [_entity release];
+    _entity = nil;
     [_relationshipToPrimaryKeyMappings release];
+    _relationshipToPrimaryKeyMappings = nil;
+    [_primaryKeyAttribute release];
+    _primaryKeyAttribute = nil;
     [super dealloc];
 }
 

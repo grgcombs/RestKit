@@ -22,6 +22,7 @@
 #define RK_CoreData_h "CoreData.h"
 
 #import <CoreData/CoreData.h>
+#import <SLFRestKit/NSManagedObject+RestKit.h>
 #import <SLFRestKit/ObjectMapping.h>
 #import <SLFRestKit/NSManagedObject+ActiveRecord.h>
 #import <SLFRestKit/RKManagedObjectStore.h>

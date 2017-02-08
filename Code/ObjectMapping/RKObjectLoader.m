@@ -30,6 +30,7 @@
 #import "RKParser.h"
 #import "RKNotifications.h"
 #import "RKRequest_Internals.h"
+#import "RKLog.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -95,7 +96,9 @@
     _result = nil;
     [_serializationMIMEType release];
     [_serializationMapping release];
-
+    [_mappingProvider release];
+    _mappingProvider = nil;
+    
 	[super dealloc];
 }
 
@@ -159,13 +162,14 @@
 #pragma mark - Response Object Mapping
 
 - (RKObjectMappingResult*)mapResponseWithMappingProvider:(RKObjectMappingProvider*)mappingProvider toObject:(id)targetObject error:(NSError**)error {
-    id<RKParser> parser = [[RKParserRegistry sharedRegistry] parserForMIMEType:self.response.MIMEType];
-    NSAssert1(parser, @"Cannot perform object load without a parser for MIME Type '%@'", self.response.MIMEType);
+    RKResponse *response = self.response;
+    id<RKParser> parser = [self parserForResponse:response];
+    NSAssert1(parser, @"Cannot perform object load without a parser for MIME Type '%@'", response.MIMEType);
 
     // Check that there is actually content in the response body for mapping. It is possible to get back a 200 response
     // with the appropriate MIME Type with no content (such as for a successful PUT or DELETE). Make sure we don't generate an error
     // in these cases
-    id bodyAsString = [self.response bodyAsString];
+    id bodyAsString = [response bodyAsString];
 	RKLogTrace(@"bodyAsString: %@", bodyAsString);
     if (bodyAsString == nil || [[bodyAsString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] == 0) {
         RKLogDebug(@"Mapping attempted on empty response body...");
@@ -244,32 +248,64 @@
     });
 }
 
-- (BOOL)canParseMIMEType:(NSString*)MIMEType {
-    if ([[RKParserRegistry sharedRegistry] parserForMIMEType:self.response.MIMEType]) {
-        return YES;
+- (id<RKParser>)parserForResponse:(RKResponse *)response
+{
+    if (!response)
+        return nil;
+    NSString *mimeType = response.MIMEType;
+    RKParserRegistry *registry = [RKParserRegistry sharedRegistry];
+    id<RKParser> parser = [registry parserForMIMEType:mimeType];
+    if (parser)
+        return parser;
+    mimeType = mimeType.lowercaseString;
+    NSData *body = response.body;
+    if (!body.length)
+        return nil;
+    BOOL isJSON = [mimeType hasSuffix:@"/json"];
+    if (!isJSON)
+    {
+        if ([mimeType isEqualToString:@"text/plain"])
+        {
+            NSString *extension = self.URL.pathExtension.lowercaseString;
+            isJSON = (extension && [extension isEqualToString:@"json"]);
+        }
     }
+    if (!isJSON)
+        return nil;
+    parser = [registry parserForMIMEType:RKMIMETypeJSON];
+    return parser;
+}
 
-    RKLogWarning(@"Unable to find parser for MIME Type '%@'", MIMEType);
-    return NO;
+- (BOOL)canParseResponse:(RKResponse*)response
+{
+    id<RKParser> parser = [self parserForResponse:response];
+    if (!parser)
+    {
+        RKLogWarning(@"Unable to find parser for MIME Type '%@'", response.MIMEType);
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)isResponseMappable {
-    if ([self.response isServiceUnavailable]) {
+    RKResponse *response = self.response;
+    if ([response isServiceUnavailable])
+    {
         [[NSNotificationCenter defaultCenter] postNotificationName:RKServiceDidBecomeUnavailableNotification object:self];
     }
 
-	if ([self.response isFailure]) {
-		[(NSObject<RKObjectLoaderDelegate>*)_delegate objectLoader:self didFailWithError:self.response.failureError];
+	if ([response isFailure]) {
+		[(NSObject<RKObjectLoaderDelegate>*)_delegate objectLoader:self didFailWithError:response.failureError];
         
-        [self didFailLoadWithError:self.response.failureError];
+        [self didFailLoadWithError:response.failureError];
 		return NO;
-    } else if ([self.response isNoContent]) {
+    } else if ([response isNoContent]) {
         // The No Content (204) response will never have a message body or a MIME Type. Invoke the delegate with self
         [self informDelegateOfObjectLoadWithResultDictionary:[NSDictionary dictionaryWithObject:self forKey:@""]];
         return NO;
-	} else if (NO == [self canParseMIMEType:[self.response MIMEType]]) {
+	} else if (NO == [self canParseResponse:response]) {
         // We can't parse the response, it's unmappable regardless of the status code
-        RKLogWarning(@"Encountered unexpected response with status code: %d (MIME Type: %@ -> URL: %@)", (int)self.response.statusCode, self.response.MIMEType, self.URL);
+        RKLogWarning(@"Encountered unexpected response with status code: %d (MIME Type: %@ -> URL: %@)", (int)response.statusCode, response.MIMEType, self.URL);
         NSError* error = [NSError errorWithDomain:RKErrorDomain code:RKObjectLoaderUnexpectedResponseError userInfo:nil];
         if ([_delegate respondsToSelector:@selector(objectLoaderDidLoadUnexpectedResponse:)]) {
             [(NSObject<RKObjectLoaderDelegate>*)_delegate objectLoaderDidLoadUnexpectedResponse:self];
@@ -282,7 +318,7 @@
         [self finalizeLoad:NO];
 
         return NO;
-    } else if ([self.response isError]) {
+    } else if ([response isError]) {
         // This is an error and we can map the MIME Type of the response
         [self handleResponseError];
 		return NO;

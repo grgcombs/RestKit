@@ -27,17 +27,7 @@
  * A lightweight queue implementation responsible
  * for dispatching and managing RKRequest objects
  */
-@interface RKRequestQueue : NSObject {
-    NSString *_name;
-	NSMutableArray* _requests;
-    NSMutableSet* _loadingRequests;
-    NSObject<RKRequestQueueDelegate>* _delegate;
-    NSUInteger _concurrentRequestsLimit;
-	NSUInteger _requestTimeout;
-	NSTimer*  _queueTimer;
-	BOOL _suspended;
-    BOOL _showsNetworkActivityIndicatorWhenBusy;
-}
+@interface RKRequestQueue : NSObject
 
 /**
  A symbolic name for the queue. Used to return existing queue references
@@ -164,6 +154,8 @@
  * Returns YES if the specified request is in this queue
  */
 - (BOOL)containsRequest:(RKRequest*)request;
+
+@property (nonatomic, readonly) NSArray* requests;
 
 @end
 

@@ -114,12 +114,13 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 	return client;
 }
 
-- (id)init {
+- (id)init
+{
     self = [super init];
 	if (self) {
 		_HTTPHeaders = [[NSMutableDictionary alloc] init];
         _additionalRootCertificates = [[NSMutableSet alloc] init];
-		self.serviceUnavailableAlertEnabled = NO;
+		_serviceUnavailableAlertEnabled = NO;
 		self.serviceUnavailableAlertTitle = NSLocalizedString(@"Service Unavailable", nil);
 		self.serviceUnavailableAlertMessage = NSLocalizedString(@"The remote resource is unavailable. Please try again later.", nil);
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -138,20 +139,23 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 	return self;
 }
 
-- (instancetype)initWithBaseURL:(NSURL *)baseURL {
+- (instancetype)initWithBaseURL:(NSURL *)baseURL
+{
     self = [self init];
     if (self) {        
-        self.cachePolicy = RKRequestCachePolicyDefault;
-        self.baseURL = baseURL;
-        
-        if (sharedClient == nil) {
+        _cachePolicy = RKRequestCachePolicyDefault;
+
+        if (sharedClient == nil)
+        {
             [RKClient setSharedClient:self];
             
             // Initialize Logging as soon as a client is created
             RKLogInitialize();
         }
+        //_baseURL = [baseURL retain];
+        self.baseURL = baseURL;
     }
-    
+
     return self;
 }
 
@@ -172,8 +176,16 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
     self.serviceUnavailableAlertTitle = nil;
     self.serviceUnavailableAlertMessage = nil;
     self.requestCache = nil;
+    self.OAuth1AccessToken = nil;
+    self.OAuth1AccessTokenSecret = nil;
+    self.OAuth1ConsumerKey = nil;
+    self.OAuth1ConsumerSecret = nil;
+    self.OAuth2AccessToken = nil;
+    self.OAuth2RefreshToken = nil;
     [_HTTPHeaders release];
+    _HTTPHeaders = nil;
     [_additionalRootCertificates release];
+    _additionalRootCertificates = nil;
 
     [super dealloc];
 }
@@ -199,15 +211,21 @@ NSString *RKPathAppendQueryParams(NSString *resourcePath, NSDictionary *queryPar
 	return RKPathAppendQueryParams(resourcePath, queryParams);
 }
 
-- (NSURL *)URLForResourcePath:(NSString *)resourcePath {
-	return [RKURL URLWithBaseURLString:self.baseURL.absoluteString resourcePath:resourcePath];
+- (NSURL *)URLForResourcePath:(NSString *)resourcePath
+{
+    NSURL *url = self.baseURL;
+
+    NSAssert1([url isKindOfClass:[NSURL class]], @"URL must be an NSURL: %@", url);
+
+	return [RKURL URLWithBaseURLString:url.absoluteString resourcePath:resourcePath];
 }
 
 - (NSString *)URLPathForResourcePath:(NSString *)resourcePath {
 	return [[self URLForResourcePath:resourcePath] absoluteString];
 }
 
-- (NSURL *)URLForResourcePath:(NSString *)resourcePath queryParams:(NSDictionary *)queryParams {
+- (NSURL *)URLForResourcePath:(NSString *)resourcePath queryParams:(NSDictionary *)queryParams
+{
 	return [RKURL URLWithBaseURLString:self.baseURL.absoluteString resourcePath:resourcePath queryParams:queryParams];
 }
 

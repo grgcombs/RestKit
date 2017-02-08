@@ -48,17 +48,17 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *);
 /**
  * Cache policy for determining how to use RKCache
  */
-typedef enum {
-	// Never use the cache
+typedef NS_OPTIONS(NSUInteger, RKRequestCachePolicy) {
+    // Never use the cache
     RKRequestCachePolicyNone = 0,
 
-	// Load from the cache when we are offline
+    // Load from the cache when we are offline
     RKRequestCachePolicyLoadIfOffline = 1 << 0,
 
-	// Load from the cache if we encounter an error
+    // Load from the cache if we encounter an error
     RKRequestCachePolicyLoadOnError = 1 << 1,
 
-	// Load from the cache if we have data stored and the server returns a 304 (not modified) response
+    // Load from the cache if we have data stored and the server returns a 304 (not modified) response
     RKRequestCachePolicyEtag = 1 << 2,
 
     // Load from the cache if we have data stored
@@ -68,7 +68,7 @@ typedef enum {
     RKRequestCachePolicyTimeout = 1 << 4,
 
     RKRequestCachePolicyDefault = RKRequestCachePolicyEtag | RKRequestCachePolicyTimeout
-} RKRequestCachePolicy;
+};
 
 /**
  * Background Request Policy

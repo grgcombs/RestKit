@@ -26,7 +26,6 @@
 #import "RKObjectPropertyInspector+CoreData.h"
 #import "RKAlert.h"
 #import "RKLog.h"
-#import "NSManagedObject+ActiveRecord.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -263,7 +262,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
 }
 
 - (NSManagedObjectContext*)newManagedObjectContext {
-	NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] init];
+	NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 	[managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
 	[managedObjectContext setUndoManager:nil];
 	[managedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
@@ -281,7 +280,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
         NSAssert1(seedDatabasePath, @"Unable to find seed database file '%@' in the Main Bundle, aborting...", seedDatabase);
         RKLogInfo(@"No existing database found, copying from seed path '%@'", seedDatabasePath);
 
-		NSError* error;
+		NSError* error = nil;
         if (![[NSFileManager defaultManager] copyItemAtPath:seedDatabasePath toPath:self.pathToStoreFile error:&error]) {
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(managedObjectStore:didFailToCopySeedDatabase:error:)]) {
 				[self.delegate managedObjectStore:self didFailToCopySeedDatabase:seedDatabase error:error];
@@ -396,7 +395,7 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
 			NSString* primaryKey = [theClass performSelector:@selector(primaryKeyProperty)];
 			id primaryKeyValue = [object valueForKey:primaryKey];
             // TODO: Unit test that this is coerced into a string!!
-            NSEntityDescription *entity = [(NSManagedObject *)object arEntity];
+            NSEntityDescription *entity = [(NSManagedObject *)object entity];
             if ([self shouldCoerceAttributeToString:primaryKey forEntity:entity]) {
                 primaryKeyValue = [primaryKeyValue stringValue];
             }

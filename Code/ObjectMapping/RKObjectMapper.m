@@ -21,6 +21,7 @@
 #import "RKObjectMapper.h"
 #import "RKObjectMapperError.h"
 #import "RKObjectMapper_Private.h"
+#import "RKLog.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -79,7 +80,8 @@
                                      errorMessage, NSLocalizedDescriptionKey,
                                      @"RKObjectMapperKeyPath", keyPath ? keyPath : (NSString*) [NSNull null],
                                      nil];
-    [userInfo addEntriesFromDictionary:otherInfo];
+    if (otherInfo)
+        [userInfo addEntriesFromDictionary:otherInfo];
     NSError* error = [NSError errorWithDomain:RKErrorDomain code:errorCode userInfo:userInfo];
     [self addError:error];
 }

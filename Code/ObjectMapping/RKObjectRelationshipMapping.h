@@ -25,7 +25,7 @@
 #import "RKObjectAttributeMapping.h"
 #import "RKObjectMappingDefinition.h"
 
-@class RKObjectmapping;
+@class RKObjectMapping;
 
 @interface RKObjectRelationshipMapping : RKObjectAttributeMapping {
     id<RKObjectMappingDefinition> _mapping;

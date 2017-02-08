@@ -149,7 +149,7 @@
 /**
  * The underlying response object for this loader
  */
-@property (nonatomic, readonly) RKResponse* response;
+@property (nonatomic, retain) RKResponse* response;
 
 /**
  * The mapping result that was produced after the request finished loading and
@@ -221,6 +221,8 @@
  * Handle an error in the response preventing it from being mapped, called from -isResponseMappable
  */
 - (void)handleResponseError;
+
+- (void)performMappingInDispatchQueue;
 
 @end
 

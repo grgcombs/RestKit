@@ -136,11 +136,8 @@
 		37085A871CEBCF310035BBC0 /* RKAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D6390613517D8B000879B1 /* RKAlert.m */; };
 		37085A881CEBCF310035BBC0 /* RKMIMETypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 25A1CB49138413DF00A7D5C9 /* RKMIMETypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37085A891CEBCF310035BBC0 /* RKMIMETypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A1CB4A138413E000A7D5C9 /* RKMIMETypes.m */; };
-		37085A8A1CEBCF310035BBC0 /* RKLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 251899FB1370F4E00092B049 /* RKLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37085A8A1CEBCF310035BBC0 /* RKLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 251899FB1370F4E00092B049 /* RKLog.h */; };
 		37085A8B1CEBCF310035BBC0 /* RKLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DBB39F13A2486300CE90F1 /* RKLog.m */; };
-		37085A8C1CEBCF310035BBC0 /* lcl_config_components.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BFF13A069C400471F0E /* lcl_config_components.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37085A8D1CEBCF310035BBC0 /* lcl_config_extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5C0113A069EA00471F0E /* lcl_config_extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37085A8E1CEBCF310035BBC0 /* lcl_config_logger.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5C0313A06A4D00471F0E /* lcl_config_logger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37085A8F1CEBCF310035BBC0 /* Support.h in Headers */ = {isa = PBXBuildFile; fileRef = 253A09F512552BDC00976E89 /* Support.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37085A931CEBCF310035BBC0 /* NSDictionary+RKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 253A089612551D8D00976E89 /* NSDictionary+RKAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37085A941CEBCF310035BBC0 /* NSDictionary+RKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 253A089712551D8D00976E89 /* NSDictionary+RKAdditions.m */; };
@@ -194,14 +191,12 @@
 		37085AC51CEBCF620035BBC0 /* UDTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CE45D714BB984B00C533CF /* UDTableView.m */; };
 		37085AC61CECC0B60035BBC0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255DE0F310FFAC0A00A85891 /* SystemConfiguration.framework */; };
 		37085AC71CECC0B60035BBC0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6C3A9510FE7524008F47C5 /* UIKit.framework */; };
-		37085ACA1CECC42B0035BBC0 /* lcl.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BDB13A0698100471F0E /* lcl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37085ACB1CECC4550035BBC0 /* RestKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 253A089212551D8D00976E89 /* RestKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37085ACC1CECC5B00035BBC0 /* lcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 250D5BDC13A0698100471F0E /* lcl.m */; };
-		37085AD61CECC90B0035BBC0 /* lcl_config_components.template.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BDD13A0698100471F0E /* lcl_config_components.template.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37085AD71CECC9100035BBC0 /* lcl_config_extensions.template.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BDE13A0698100471F0E /* lcl_config_extensions.template.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37085AD81CECC9160035BBC0 /* lcl_config_logger.template.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BDF13A0698100471F0E /* lcl_config_logger.template.h */; };
-		37085ADA1CECC93E0035BBC0 /* LCLNSLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BE913A0698100471F0E /* LCLNSLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37085ADB1CECC9450035BBC0 /* LCLNSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 250D5BEA13A0698100471F0E /* LCLNSLog.m */; };
+		371457111E3BA23900AEE449 /* lcl.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BDB13A0698100471F0E /* lcl.h */; };
+		371457121E3BA24100AEE449 /* lcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 250D5BDC13A0698100471F0E /* lcl.m */; };
+		371457131E3BA25300AEE449 /* lcl_config_components.template.h in Headers */ = {isa = PBXBuildFile; fileRef = 250D5BDD13A0698100471F0E /* lcl_config_components.template.h */; };
+		37E86DE41E133E1B00AB2979 /* NSManagedObject+RestKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E86DE21E133E1B00AB2979 /* NSManagedObject+RestKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		37E86DE51E133E1B00AB2979 /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E86DE31E133E1B00AB2979 /* NSManagedObject+RestKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -426,6 +421,8 @@
 		37CA4C701410A7CF009A3DCE /* SOCKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKit.m; sourceTree = "<group>"; };
 		37CA4C851410ABD2009A3DCE /* RKPathMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKPathMatcher.h; sourceTree = "<group>"; };
 		37CA4C861410ABD2009A3DCE /* RKPathMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKPathMatcher.m; sourceTree = "<group>"; };
+		37E86DE21E133E1B00AB2979 /* NSManagedObject+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+RestKit.h"; sourceTree = "<group>"; };
+		37E86DE31E133E1B00AB2979 /* NSManagedObject+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+RestKit.m"; sourceTree = "<group>"; };
 		3F19126812DF6B3200C077AD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		3F19129712DF6B4800C077AD /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		3F278A3A139D2AFF009AC3FA /* NSData+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+MD5.h"; path = "Code/Network/NSData+MD5.h"; sourceTree = SOURCE_ROOT; };
@@ -612,6 +609,8 @@
 				258F87C614117ADB007AABCD /* RKSearchWordObserver.h */,
 				258F87C714117ADB007AABCD /* RKSearchWordObserver.m */,
 				25431EBA1255640800A315CF /* CoreData.h */,
+				37E86DE21E133E1B00AB2979 /* NSManagedObject+RestKit.h */,
+				37E86DE31E133E1B00AB2979 /* NSManagedObject+RestKit.m */,
 				257FB681139582C5003A628E /* NSManagedObject+ActiveRecord.h */,
 				257FB682139582C5003A628E /* NSManagedObject+ActiveRecord.m */,
 				253A086312551D8D00976E89 /* RKManagedObjectStore.h */,
@@ -959,7 +958,6 @@
 				37085A561CEBCEFF0035BBC0 /* RKObjectMapperError.h in Headers */,
 				37085AA81CEBCF3D0035BBC0 /* RKTableItem.h in Headers */,
 				37085A1B1CEBCEF70035BBC0 /* Network.h in Headers */,
-				37085A8D1CEBCF310035BBC0 /* lcl_config_extensions.h in Headers */,
 				37085A1C1CEBCEF70035BBC0 /* NSDictionary+RKRequestSerialization.h in Headers */,
 				37085A971CEBCF310035BBC0 /* NSURL+RestKit.h in Headers */,
 				37085A801CEBCF310035BBC0 /* RKPathMatcher.h in Headers */,
@@ -986,16 +984,13 @@
 				37085A171CEBCEF70035BBC0 /* NSString+MD5.h in Headers */,
 				37085A821CEBCF310035BBC0 /* RestKit-Prefix.pch in Headers */,
 				37085A341CEBCEF70035BBC0 /* RKOAuthClient.h in Headers */,
-				37085ACA1CECC42B0035BBC0 /* lcl.h in Headers */,
 				37085A661CEBCF060035BBC0 /* CoreData.h in Headers */,
 				37085A4D1CEBCEFF0035BBC0 /* RKObjectMappingResult.h in Headers */,
 				37085A7F1CEBCF2D0035BBC0 /* RKJSONParserJSONKit.h in Headers */,
 				37085A5C1CEBCEFF0035BBC0 /* RKMappingOperationQueue.h in Headers */,
 				37085A4F1CEBCEFF0035BBC0 /* RKObjectMapper_Private.h in Headers */,
-				37085ADA1CECC93E0035BBC0 /* LCLNSLog.h in Headers */,
 				37085A591CEBCEFF0035BBC0 /* RKObjectMappingDefinition.h in Headers */,
 				37085A2A1CEBCEF70035BBC0 /* RKRequestSerializable.h in Headers */,
-				37085AD71CECC9100035BBC0 /* lcl_config_extensions.template.h in Headers */,
 				37085A571CEBCEFF0035BBC0 /* RKDynamicObjectMapping.h in Headers */,
 				37085A371CEBCEFF0035BBC0 /* RKObjectLoader.h in Headers */,
 				37085A951CEBCF310035BBC0 /* NSString+RestKit.h in Headers */,
@@ -1010,29 +1005,28 @@
 				37085ACB1CECC4550035BBC0 /* RestKit.h in Headers */,
 				37085A471CEBCEFF0035BBC0 /* RKObjectRelationshipMapping.h in Headers */,
 				37085A831CEBCF310035BBC0 /* RKParser.h in Headers */,
+				37E86DE41E133E1B00AB2979 /* NSManagedObject+RestKit.h in Headers */,
 				37085AC01CEBCF550035BBC0 /* JSONKit.h in Headers */,
 				37085A691CEBCF060035BBC0 /* RKManagedObjectStore.h in Headers */,
-				37085AD61CECC90B0035BBC0 /* lcl_config_components.template.h in Headers */,
 				37085A881CEBCF310035BBC0 /* RKMIMETypes.h in Headers */,
 				37085A9E1CEBCF3D0035BBC0 /* RKControlTableViewCell.h in Headers */,
 				37085A781CEBCF100035BBC0 /* RKCache.h in Headers */,
+				371457131E3BA25300AEE449 /* lcl_config_components.template.h in Headers */,
 				37085A411CEBCEFF0035BBC0 /* RKObjectMapping.h in Headers */,
 				37085A731CEBCF060035BBC0 /* RKManagedObjectMappingOperation.h in Headers */,
 				37085A531CEBCEFF0035BBC0 /* RKParserRegistry.h in Headers */,
 				37085A3B1CEBCEFF0035BBC0 /* RKObjectPropertyInspector.h in Headers */,
-				37085A8E1CEBCF310035BBC0 /* lcl_config_logger.h in Headers */,
 				37085A201CEBCEF70035BBC0 /* RKNotifications.h in Headers */,
 				37085A5A1CEBCEFF0035BBC0 /* RKDynamicObjectMappingMatcher.h in Headers */,
-				37085AD81CECC9160035BBC0 /* lcl_config_logger.template.h in Headers */,
 				37085A451CEBCEFF0035BBC0 /* RKObjectSerializer.h in Headers */,
 				37085A551CEBCEFF0035BBC0 /* RKRouter.h in Headers */,
 				37085A031CEBCB970035BBC0 /* SLFRestKit.h in Headers */,
 				37085A491CEBCEFF0035BBC0 /* RKObjectMapper.h in Headers */,
-				37085A8C1CEBCF310035BBC0 /* lcl_config_components.h in Headers */,
 				37085ABB1CEBCF460035BBC0 /* NSData+Base64.h in Headers */,
 				37085AB91CEBCF460035BBC0 /* GCOAuth.h in Headers */,
 				37085A4B1CEBCEFF0035BBC0 /* RKObjectMappingProvider.h in Headers */,
 				37085A331CEBCEF70035BBC0 /* RKRequest_Internals.h in Headers */,
+				371457111E3BA23900AEE449 /* lcl.h in Headers */,
 				37085AC41CEBCF620035BBC0 /* UDTableView.h in Headers */,
 				37085A431CEBCEFF0035BBC0 /* RKObjectAttributeMapping.h in Headers */,
 				37085AB21CEBCF3D0035BBC0 /* UI.h in Headers */,
@@ -1076,7 +1070,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = RestKit;
 				TargetAttributes = {
 					370859FF1CEBCB960035BBC0 = {
@@ -1183,7 +1177,6 @@
 				37085AC51CEBCF620035BBC0 /* UDTableView.m in Sources */,
 				37085A251CEBCEF70035BBC0 /* RKParamsAttachment.m in Sources */,
 				37085A2C1CEBCEF70035BBC0 /* RKResponse.m in Sources */,
-				37085ADB1CECC9450035BBC0 /* LCLNSLog.m in Sources */,
 				37085A7E1CEBCF2D0035BBC0 /* RKJSONParserJSONKit.m in Sources */,
 				37085AA31CEBCF3D0035BBC0 /* RKForm.m in Sources */,
 				37085A441CEBCEFF0035BBC0 /* RKObjectAttributeMapping.m in Sources */,
@@ -1218,8 +1211,8 @@
 				37085AC11CEBCF550035BBC0 /* JSONKit.m in Sources */,
 				37085A9D1CEBCF3D0035BBC0 /* RKControlTableItem.m in Sources */,
 				37085A381CEBCEFF0035BBC0 /* RKObjectLoader.m in Sources */,
-				37085ACC1CECC5B00035BBC0 /* lcl.m in Sources */,
 				37085A651CEBCF060035BBC0 /* RKSearchWordObserver.m in Sources */,
+				371457121E3BA24100AEE449 /* lcl.m in Sources */,
 				37085AA51CEBCF3D0035BBC0 /* RKFormSection.m in Sources */,
 				37085A4E1CEBCEFF0035BBC0 /* RKObjectMappingResult.m in Sources */,
 				37085A2E1CEBCEF70035BBC0 /* RKURL.m in Sources */,
@@ -1230,6 +1223,7 @@
 				37085A271CEBCEF70035BBC0 /* RKReachabilityObserver.m in Sources */,
 				37085AAF1CEBCF3D0035BBC0 /* RKTableViewCellMapping.m in Sources */,
 				37085A9F1CEBCF3D0035BBC0 /* RKControlTableViewCell.m in Sources */,
+				37E86DE51E133E1B00AB2979 /* NSManagedObject+RestKit.m in Sources */,
 				37085A231CEBCEF70035BBC0 /* RKParams.m in Sources */,
 				37085A981CEBCF310035BBC0 /* NSURL+RestKit.m in Sources */,
 				37085A961CEBCF310035BBC0 /* NSString+RestKit.m in Sources */,
@@ -1248,17 +1242,21 @@
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=macosx*]" = "$(ARCHS_STANDARD)";
-				BUILD_STYLE = Debug;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "Code/Support/RestKit-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1268,30 +1266,31 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				STRIP_STYLE = "non-global";
 				SYMROOT = Build;
-				VALID_ARCHS = "armv7s armv7 i386 x86_64 arm64";
 			};
 			name = Debug;
 		};
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=macosx*]" = "$(ARCHS_STANDARD)";
-				BUILD_STYLE = Release;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "Code/Support/RestKit-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1300,79 +1299,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SYMROOT = Build;
-				VALID_ARCHS = "armv7s armv7 i386 x86_64 arm64";
 			};
 			name = Release;
-		};
-		253216491338CA940099A5DB /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=macosx*]" = "$(ARCHS_STANDARD)";
-				BUILD_STYLE = Release;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_PREFIX_HEADER = "Code/Support/RestKit-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "-ObjC";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SYMROOT = Build;
-				VALID_ARCHS = "armv7s armv7 i386 x86_64 arm64";
-			};
-			name = Distribution;
-		};
-		255920CC13BDEDB400E9C29C /* Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
-				"ARCHS[sdk=macosx*]" = "$(ARCHS_STANDARD)";
-				BUILD_STYLE = Release;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_PREFIX_HEADER = "Code/Support/RestKit-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "-ObjC";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SYMROOT = Build;
-				VALID_ARCHS = "armv7s armv7 i386 x86_64 arm64";
-			};
-			name = "Ad Hoc";
 		};
 		37085A061CEBCB970035BBC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1386,7 +1319,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1429,7 +1362,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1456,84 +1389,6 @@
 			};
 			name = Release;
 		};
-		37085A081CEBCB970035BBC0 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SLFRestKit/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openstates.SLFRestKit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Distribution;
-		};
-		37085A091CEBCB970035BBC0 /* Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SLFRestKit/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openstates.SLFRestKit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Ad Hoc";
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1542,8 +1397,6 @@
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
 				1DEB922408733DC00010E9CD /* Release */,
-				253216491338CA940099A5DB /* Distribution */,
-				255920CC13BDEDB400E9C29C /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1553,8 +1406,6 @@
 			buildConfigurations = (
 				37085A061CEBCB970035BBC0 /* Debug */,
 				37085A071CEBCB970035BBC0 /* Release */,
-				37085A081CEBCB970035BBC0 /* Distribution */,
-				37085A091CEBCB970035BBC0 /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

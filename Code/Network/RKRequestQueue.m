@@ -39,15 +39,13 @@ static const NSTimeInterval kFlushDelay = 0.3;
 
 @interface RKRequestQueue ()
 @property (nonatomic, retain, readwrite) NSString* name;
+@property (nonatomic, retain) NSMutableArray* requests;
+@property (nonatomic, retain) NSMutableSet* loadingRequests;
+@property (nonatomic, retain) NSTimer *queueTimer;
+
 @end
 
 @implementation RKRequestQueue
-
-@synthesize name = _name;
-@synthesize delegate = _delegate;
-@synthesize concurrentRequestsLimit = _concurrentRequestsLimit;
-@synthesize requestTimeout = _requestTimeout;
-@synthesize suspended = _suspended;
 
 #if TARGET_OS_IPHONE
 @synthesize showsNetworkActivityIndicatorWhenBusy = _showsNetworkActivityIndicatorWhenBusy;
@@ -165,6 +163,8 @@ static const NSTimeInterval kFlushDelay = 0.3;
     _loadingRequests = nil;
     [_requests release];
     _requests = nil;
+    [_name release];
+    _name = nil;
 
     [super dealloc];
 }
